@@ -1,0 +1,351 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>PKU 编译原理实践 Lab3 | Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶</title><meta name="author" content="LesserLordKusanali1027"><meta name="copyright" content="LesserLordKusanali1027"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="PKU 编译原理实践 第三个测试，实现了对表达式的处理，并重构了部分模块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PKU 编译原理实践 Lab3">
+<meta property="og:url" content="http://example.com/2026/03/02/PKUcompiler-Lab3/index.html">
+<meta property="og:site_name" content="Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶">
+<meta property="og:description" content="PKU 编译原理实践 第三个测试，实现了对表达式的处理，并重构了部分模块">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cover/Compilers.png">
+<meta property="article:published_time" content="2026-03-02T11:47:27.000Z">
+<meta property="article:modified_time" content="2026-03-02T11:53:47.172Z">
+<meta property="article:author" content="LesserLordKusanali1027">
+<meta property="article:tag" content="PKUcompiler">
+<meta property="article:tag" content="CSdiy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cover/Compilers.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PKU 编译原理实践 Lab3",
+  "url": "http://example.com/2026/03/02/PKUcompiler-Lab3/",
+  "image": "http://example.com/img/cover/Compilers.png",
+  "datePublished": "2026-03-02T11:47:27.000Z",
+  "dateModified": "2026-03-02T11:53:47.172Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LesserLordKusanali1027",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2026/03/02/PKUcompiler-Lab3/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PKU 编译原理实践 Lab3',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Background2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"></a><a class="nav-page-title" href="/"><span class="site-name">PKU 编译原理实践 Lab3</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">PKU 编译原理实践 Lab3</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-02T11:47:27.000Z" title="发表于 2026-03-02 19:47:27">2026-03-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-02T11:53:47.172Z" title="更新于 2026-03-02 19:53:47">2026-03-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%88%98%E7%BC%96%E8%AF%91/">战编译</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>Lab3，重构</h1>
+<p>塔塔开，一滋莫塔塔开 (ง๑ •̀_•́)ง</p>
+<h1>复习</h1>
+<p>先看下前两个实验得到的东西…</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">compiler</span><br><span class="line">├── hello.c</span><br><span class="line">├── Makefile</span><br><span class="line">└── src</span><br><span class="line">    ├── sysy.l</span><br><span class="line">    ├── sysy.y</span><br><span class="line">    ├── parser.hpp</span><br><span class="line">    ├── koopa.hpp</span><br><span class="line">    ├── koopa.cpp</span><br><span class="line">    ├── riscv.hpp</span><br><span class="line">    ├── riscv.cpp</span><br><span class="line">    └── main.cpp</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>sysy.l</code> 输入 flex 中得到词法分析器</li>
+<li><code>sysy.y</code> 输入 bison 中得到语法分析器</li>
+<li><code>koopa.hpp</code>、<code>koopa.cpp</code> 定义 Koopa IR 数据结构，遍历 AST 构建 Koopa IR</li>
+<li><code>riscv.hpp</code>、<code>riscv.cpp</code> 遍历 Koopa IR 输出 RISC-V 汇编代码</li>
+</ul>
+<p>…各个模块已经齐了，Lab3 要在这些文件中增加内容，使原来只能放数字的 <code>return &lt;num&gt;;</code> 变成可以放一个表达式的 <code>return &lt;exp&gt;;</code></p>
+<p>表面上是语法规则的增加，实际每次都要<strong>从下往上修改几乎每个文件</strong>，有新 token 要改 <code>sysy.l</code> 吧，有新语法要改 <code>sysy.y</code> 吧，新语法意味着新 AST 数据结构要改 <code>parser</code> 吧，遍历新 AST、以及有新 IR 语句要改 <code>koopa</code> 吧，把新 IR 语句转换成 RISC-V 要改 <code>riscv</code> 吧…</p>
+<p>而为了管理好逐渐增加的内容，我也重构了几个文件，改了改各个层之间的接口，这还挺花时间的。至于具体花了多少时间，可以看下距离我做完 Lab2 过去了多久 ( ᗜ ‸ ᗜ )</p>
+<h1>一元表达式</h1>
+<p>增改了如下语法规则，有新的终结符、新的非终结符。作为一元表达式的规则，可以用来分析比如 <code>+(- -!6)</code> 这样的<s>颜文字</s>式子。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Stmt        ::= &quot;return&quot; Exp &quot;;&quot;;</span><br><span class="line"></span><br><span class="line">Exp         ::= UnaryExp;</span><br><span class="line">PrimaryExp  ::= &quot;(&quot; Exp &quot;)&quot; | Number;</span><br><span class="line">Number      ::= INT_CONST;</span><br><span class="line">UnaryExp    ::= PrimaryExp | UnaryOp UnaryExp;</span><br><span class="line">UnaryOp     ::= &quot;+&quot; | &quot;-&quot; | &quot;!&quot;;</span><br></pre></td></tr></table></figure>
+<p>示例代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> +(- -!<span class="number">6</span>);  <span class="comment">// 看起来像个颜文字</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="词法分析">词法分析</h2>
+<p>增加的终结符有 <code>+</code>、<code>-</code>、<code>!</code>、<code>(</code>、<code>)</code> ，不过这些都属于单个字符，已经被处理过了，所以不需要修改 <code>sysy.l</code> 文件。</p>
+<h2 id="语法分析">语法分析</h2>
+<p>出现了 <code>|</code> 这种有多种选择的语法规则，先不关心语法分析中采用何种算法处理这种规则，我只要知道：</p>
+<ol>
+<li>AST 的数据结构如何设计</li>
+<li><code>sysy.y</code> 中带 <code>|</code> 的规则怎么写</li>
+</ol>
+<p>对于 1 ，文档给出两种选择：</p>
+<ul>
+<li>为 <code>::=</code> 右侧每个规则设计一种 AST 类</li>
+<li>只为 <code>::=</code> 左侧的符号设计一种 AST，使其涵盖 <code>::=</code> 右侧的所有规则</li>
+</ul>
+<p>对于后者，虽然类少了，但类中会增加 <code>enum/union</code>；而前者，虽然类多了，但代码问题上<strong>只需要处理多态</strong>，<strong>不需要写联合体</strong>，更加简单，所以选择前者。</p>
+<p>以 <code>PrimaryExp  ::= &quot;(&quot; Exp &quot;)&quot; | Number;</code> 为例，定义两个类就好啦</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PrimaryExp  ::= &quot;(&quot; Exp &quot;)&quot;;</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PrimaryExpAST_1</span> : <span class="keyword">public</span> BaseAST &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    std::unique_ptr&lt;BaseAST&gt; exp;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// PrimaryExp  ::= Number;</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PrimaryExpAST_2</span> : <span class="keyword">public</span> BaseAST &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    std::unique_ptr&lt;BaseAST&gt; number;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>sysy.y</code> 中，为了将一个终结符与多个规则匹配，用如下写法。不同的规则有自己的 AST，在动作代码中 new 对应的 AST 即可。 <code>PrimaryExp</code> 示例如下。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">非终结符</span><br><span class="line">  : 规则1 &#123; 动作代码1 &#125;</span><br><span class="line">  | 规则2 &#123; 动作代码2 &#125;</span><br><span class="line">  | 规则3 &#123; 动作代码3 &#125;</span><br><span class="line">  ;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PrimaryExp</span><br><span class="line">  : &#x27;(&#x27; Exp &#x27;)&#x27; &#123;</span><br><span class="line">    auto ast = new PrimaryExpAST_1();</span><br><span class="line">    ast -&gt; exp = unique_ptr&lt;BaseAST&gt;($2);</span><br><span class="line">    $$ = ast;</span><br><span class="line">  &#125;</span><br><span class="line">  | Number &#123;</span><br><span class="line">    auto ast = new PrimaryExpAST_2();</span><br><span class="line">    ast -&gt; number = unique_ptr&lt;BaseAST&gt;($1);</span><br><span class="line">    $$ = ast;</span><br><span class="line">  &#125;</span><br><span class="line">  ;</span><br></pre></td></tr></table></figure>
+<p>用这种方法将所有规则写到 <code>sysy.y</code> 和 <code>parser.hpp</code> 中，然后就可以输出 AST 啦，对于示例代码，请看阶段性…呃…有点难看</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CompUnitAST &#123; FuncDefAST &#123; FuncTypeAST &#123; int &#125;, main, BlockAST &#123; StmtAST &#123; ExpAST &#123; LOrExpAST &#123; LAndExpAST &#123; EqExpAST &#123; RelExpAST &#123; AddExpAST &#123; MulExpAST &#123; UnaryExpAST &#123; +, UnaryExpAST &#123; PrimaryExpAST &#123; ExpAST &#123; LOrExpAST &#123; LAndExpAST &#123; EqExpAST &#123; RelExpAST &#123; AddExpAST &#123; MulExpAST &#123; UnaryExpAST &#123; -, UnaryExpAST &#123; -, UnaryExpAST &#123; !, UnaryExpAST &#123; PrimaryExpAST &#123; 6 &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125; &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="IR-生成">IR 生成</h2>
+<p>做了两件事：改接口、增加新的 IR 生成逻辑。</p>
+<h3 id="改接口">改接口</h3>
+<p>为什么要改接口呢 (*´･д･)?</p>
+<p>Lab1 中，为了遍历 AST 树，为每种 AST 结点设计了一个接口函数 (如下)。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ProgramIR* <span class="title">Generate_Program</span><span class="params">(CompUnitAST* ast)</span></span>;</span><br><span class="line"><span class="function">FunctionIR* <span class="title">Generate_Function</span><span class="params">(FuncDefAST* func_def)</span></span>;</span><br><span class="line"><span class="function">BasicBlockIR* <span class="title">Generate_BasicBlock</span><span class="params">(BlockAST* block)</span></span>;</span><br><span class="line"><span class="function">ValueIR* <span class="title">Generate_Value</span><span class="params">(StmtAST* stmt)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>这是因为 <code>parser.hpp</code> 把 AST 成员都定义成了 <code>std::unique_ptr&lt;BaseAST&gt;</code> 类型，所以传入接口前要用 <code>dynamic_cast</code> 将一堆 <code>BaseAST</code> 进行<strong>显式类型转换</strong>，这很丑陋。随着类型增加，需要用 <code>dynamic_cast</code> 判断的类型越来越多，且这些判断难以提炼出统一的格式。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">FunctionIR* <span class="title">Generate_Function</span><span class="params">(FuncDefAST* func_def)</span> </span>&#123;</span><br><span class="line">    BlockAST* fd = <span class="built_in">dynamic_cast</span>&lt;BlockAST*&gt;(func_def-&gt;block.<span class="built_in">get</span>());</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>回到设计接口的出发点，想<strong>对不同 AST 派生类执行不同处理</strong>，有 3 种方法，选择第 3 种吧。</p>
+<ol>
+<li>直接在 AST 类内实现输出 IR 的函数。<strong>不符合分层</strong>，早就被 pass 了。</li>
+<li>外部接口 + <code>dynamic_cast</code>。Lab1 用的，<strong>需要手动判断类型</strong>，很麻烦。<code>dynamic_cast</code> 更适合用来<strong>保险</strong>，而不是实现功能。</li>
+<li>外部接口类 + <strong>Visitor 模式</strong>。Visitor 模式的神奇之处就是<strong>可以根据运行时类型自动选择接口函数</strong>，不需要显式声明，也统一了接口类型。</li>
+</ol>
+<p>Visitor 模式部分实现：</p>
+<ul>
+<li><code>parser.hpp</code></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 所有 AST 的基类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BaseAST</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="type">void</span> <span class="title">accept</span><span class="params">(Visitor_ast&amp; visitor)</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// CompUnit  ::= FuncDef;</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CompUnitAST</span> : <span class="keyword">public</span> BaseAST &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">accept</span><span class="params">(Visitor_ast&amp; visitor)</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        visitor.<span class="built_in">ir_init</span>(*<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// FuncDef   ::= FuncType IDENT &quot;(&quot; &quot;)&quot; Block;</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FuncDefAST</span> : <span class="keyword">public</span> BaseAST &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">accept</span><span class="params">(Visitor_ast&amp; visitor)</span> <span class="keyword">override</span> </span>&#123;</span><br><span class="line">        visitor.<span class="built_in">ir_init</span>(*<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>koopa.hpp</code>，这里在 Visitor 类中除接口函数外还定义了其他变量，用来在不同接口间相互调用时传递信息。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Visitor_ast</span> &#123;</span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 最后会将 program 指向构建的 Koopa IR</span></span><br><span class="line">    <span class="comment">// 因为 ir_init 参数要统一，这里用来传参</span></span><br><span class="line">    ProgramIR* program;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    FunctionIR* function;</span><br><span class="line">    BasicBlockIR* basic_block;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 接口函数，格式很统一</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ir_init</span><span class="params">(CompUnitAST&amp; comp_unit)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ir_init</span><span class="params">(FuncDefAST&amp; func_def)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">ir_init</span><span class="params">(FuncTypeAST&amp; func_type)</span></span>;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="新的-IR-生成逻辑">新的 IR 生成逻辑</h3>
+<p>先前只有一条 IR 所以直接替换就行，现在有了多条 IR (如下)，不同 IR 语句间要有临时符号的传递。同时 AST 也更复杂了，无法像先前一样直接用 <code>value_ir -&gt; operand = fd -&gt; num;</code> 就能获取到数值。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">%0 = eq 6, 0</span><br><span class="line">%1 = sub 0, %0</span><br><span class="line">%2 = sub 0, %1</span><br><span class="line">ret %2</span><br></pre></td></tr></table></figure>
+<p>于是，在 Visitor_ast 类中定义一个栈，来辅助进行临时符号和数值的传递，这就是新增的 IR 逻辑。</p>
+<h3 id="阶段性成果">阶段性成果</h3>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  %0 = eq 6, 0</span><br><span class="line">  %1 = sub 0, %0</span><br><span class="line">  %2 = sub 0, %1</span><br><span class="line">  ret %2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="RISC-V-生成">RISC-V 生成</h2>
+<p>IR 指令在原来的 <code>ret ...</code> 上新增了 <code>sub</code> 和 <code>eq</code>，需要在 <code>riscv</code> 中将它们<strong>替换</strong>成 RISC 。是的，这里 <code>riscv</code> 还是从 IR 到 RISC-V 的简单对应替换。</p>
+<p>此外，临时符号和数值的增加带来了对存储的需求，据文档所说，这里暂时可以全部用寄存器存放，于是按照 <code>t0-t6,a0-a7</code> 的顺序使用寄存器。</p>
+<p>依旧用 Visitor 模式实现 IR 到 RISC-V 的转换 (<code>Visitor_ir</code> 类如下)，其中关键的指令转换由两个接口函数 <code>void riscv_get(ValueIR_1&amp; value)</code>、<code>void riscv_get(ValueIR_2&amp; value)</code> 完成。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Visitor_ir</span> &#123;</span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    std::string register_name[<span class="number">16</span>] = &#123;<span class="string">&quot;x0&quot;</span>,<span class="string">&quot;t0&quot;</span>,<span class="string">&quot;t1&quot;</span>,<span class="string">&quot;t2&quot;</span>,<span class="string">&quot;t3&quot;</span>,<span class="string">&quot;t4&quot;</span>,<span class="string">&quot;t5&quot;</span>,<span class="string">&quot;t6&quot;</span>,<span class="string">&quot;a0&quot;</span>,<span class="string">&quot;a2&quot;</span>,<span class="string">&quot;a3&quot;</span>,<span class="string">&quot;a4&quot;</span>,<span class="string">&quot;a5&quot;</span>,<span class="string">&quot;a6&quot;</span>,<span class="string">&quot;a7&quot;</span>&#125;;</span><br><span class="line">    <span class="type">int</span> current_register = <span class="number">1</span>; <span class="comment">// 最靠前的空闲寄存器</span></span><br><span class="line">    std::ofstream file;</span><br><span class="line">    <span class="comment">// 算术表达式增加:</span></span><br><span class="line">    std::unordered_map&lt;std::string, <span class="type">int</span>&gt; symbol_register;</span><br><span class="line">    </span><br><span class="line">  <span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">Visitor_ir</span>(<span class="type">const</span> <span class="type">char</span>* output) &#123;</span><br><span class="line">        file.<span class="built_in">open</span>(output);</span><br><span class="line">        <span class="keyword">if</span> (!file.<span class="built_in">is_open</span>())</span><br><span class="line">            std::cout &lt;&lt; <span class="string">&quot;Failed to open file &quot;</span> &lt;&lt; output &lt;&lt; std::endl;</span><br><span class="line">        </span><br><span class="line">        symbol_register[<span class="string">&quot;0&quot;</span>] = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ~<span class="built_in">Visitor_ir</span>() &#123;</span><br><span class="line">        file.<span class="built_in">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">riscv_get</span><span class="params">(ProgramIR&amp; program)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">riscv_get</span><span class="params">(FunctionIR&amp; function)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">riscv_get</span><span class="params">(BasicBlockIR&amp; basic_block)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">riscv_get</span><span class="params">(ValueIR_1&amp; value)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">riscv_get</span><span class="params">(ValueIR_2&amp; value)</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>目前 <code>void riscv_get(ValueIR_2&amp; value)</code> 采取最原始的替换方法</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Visitor_ir::riscv_get</span><span class="params">(ValueIR_2&amp; value)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 每个 opcode 有对应的处理</span></span><br><span class="line">    <span class="keyword">if</span> (value.opcode == <span class="string">&quot;sub&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!symbol_register.<span class="built_in">count</span>(value.operand1)) &#123;</span><br><span class="line">            file &lt;&lt; <span class="string">&quot;  li    &quot;</span> &lt;&lt; register_name[current_register] </span><br><span class="line">                 &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; value.operand1 &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">            symbol_register[value.operand1] = current_register;</span><br><span class="line">            current_register++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!symbol_register.<span class="built_in">count</span>(value.operand2)) &#123;</span><br><span class="line">            file &lt;&lt; <span class="string">&quot;  li    &quot;</span> &lt;&lt; register_name[current_register] </span><br><span class="line">                 &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; value.operand2 &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">            symbol_register[value.operand2] = current_register;</span><br><span class="line">            current_register++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        file &lt;&lt; <span class="string">&quot;  sub   &quot;</span> &lt;&lt; register_name[current_register] </span><br><span class="line">             &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; register_name[symbol_register[value.operand1]] </span><br><span class="line">             &lt;&lt; <span class="string">&quot;, &quot;</span> &lt;&lt; register_name[symbol_register[value.operand2]] &lt;&lt; <span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">        symbol_register[value.target] = current_register;</span><br><span class="line">        current_register++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>阶段性成果：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  .text</span><br><span class="line">  .globl main</span><br><span class="line">main:</span><br><span class="line">  li    t0, 6</span><br><span class="line">  xor   t1, t0, x0</span><br><span class="line">  seqz  t1, t1</span><br><span class="line">  sub   t2, x0, t1</span><br><span class="line">  sub   t3, x0, t2</span><br><span class="line">  mv    a0, t3</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+<h1>算术表达式</h1>
+<p>增改语法规则如下，可以处理 <code>return 1+2*3;</code> 这种算式了。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Exp         ::= AddExp;</span><br><span class="line">MulExp      ::= UnaryExp | MulExp (&quot;*&quot; | &quot;/&quot; | &quot;%&quot;) UnaryExp;</span><br><span class="line">AddExp      ::= MulExp | AddExp (&quot;+&quot; | &quot;-&quot;) MulExp;</span><br></pre></td></tr></table></figure>
+<p>示例代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span> + <span class="number">2</span> * <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="词法-语法分析">词法/语法分析</h2>
+<p>没有新东西，和前面一样添加即可。</p>
+<h2 id="IR-生成-2">IR 生成</h2>
+<p>用栈传递临时符号和数值在这里发挥了作用。此外要注意遍历 AST 的顺序，对于这里会看到的 AST 树 (如下)，可以按左子树-&gt;右子树-&gt;中间遍历 Exp ，也可以右子树-&gt;左子树-&gt;中间，我选了后者。<br>
+<img src="/img/战编译/Lab3_arithmetic_tree.jpg" width=250px></p>
+<h2 id="RISC-V-生成-2">RISC-V 生成</h2>
+<p>虽然没有明说，但从示例中可以看到出现了<strong>寄存器重用</strong>，即<strong>目标寄存器</strong>可以是<strong>参数寄存器</strong>中的某一个，这是一种节约寄存器的方法。</p>
+<p>比如下面的 Koopa IR 代码</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%0 = mul 2, 3</span><br><span class="line">%1 = add 1, %0</span><br></pre></td></tr></table></figure>
+<p>可以转换成如下 RISC-V，<code>mul t1, t0, t1</code>、<code>add t2, t1, t2</code> 都重用了寄存器。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">li  t0, 2</span><br><span class="line">li  t1, 3</span><br><span class="line">mul t1, t0, t1</span><br><span class="line">li  t2, 1</span><br><span class="line">add t2, t1, t2</span><br></pre></td></tr></table></figure>
+<p>但寄存器重用 (无脑版) 有个前提条件：Koopa IR 中每个临时变量 <code>%...</code> 最多被使用一次，这样才可以随意放心重用。而下面这个例子中 <code>%1 = add %0, %0</code> 显然是不能把 <code>%0</code> 所在寄存器重用的，但得到这点就需要额外的分析了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%0 = add 1, 2</span><br><span class="line">%1 = add %0, %0</span><br><span class="line">%2 = add 1, %0</span><br></pre></td></tr></table></figure>
+<p>幸运的是，对于单纯一个表达式，不会出现临时变量被使用超过一次的情况。</p>
+<h2 id="阶段性成果-2">阶段性成果</h2>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">  .text</span><br><span class="line">  .globl main</span><br><span class="line">main:</span><br><span class="line">  li    t0, 2</span><br><span class="line">  li    t1, 3</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  li    t2, 1</span><br><span class="line">  add   t2, t2, t1</span><br><span class="line">  mv    a0, t2</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+<h1>比较和逻辑表达式</h1>
+<p>增改语法规则如下，可以处理 <code>return 1&lt;=(2+3)||1&lt;0</code> 这种含比较和逻辑符的表达式了。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Exp         ::= LOrExp;</span><br><span class="line">RelExp      ::= AddExp | RelExp (&quot;&lt;&quot; | &quot;&gt;&quot; | &quot;&lt;=&quot; | &quot;&gt;=&quot;) AddExp;</span><br><span class="line">EqExp       ::= RelExp | EqExp (&quot;==&quot; | &quot;!=&quot;) RelExp;</span><br><span class="line">LAndExp     ::= EqExp | LAndExp &quot;&amp;&amp;&quot; EqExp;</span><br><span class="line">LOrExp      ::= LAndExp | LOrExp &quot;||&quot; LAndExp;</span><br></pre></td></tr></table></figure>
+<p>示例程序</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span> &lt;= <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="词法-语法分析-2">词法/语法分析</h2>
+<p>出现了两个字符的运算符，有 6 个：<code>&gt;=</code>、<code>&lt;=</code>、<code>==</code>、<code>!=</code>、<code>&amp;&amp;</code>、<code>||</code>，需要在词法分析器中添加：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;=&quot;            &#123; return GE; &#125;</span><br><span class="line">&quot;&lt;=&quot;            &#123; return LE; &#125;</span><br><span class="line">&quot;==&quot;            &#123; return EQ; &#125;</span><br><span class="line">&quot;!=&quot;            &#123; return NE; &#125;</span><br><span class="line">&quot;&amp;&amp;&quot;            &#123; return AND; &#125;</span><br><span class="line">&quot;||&quot;            &#123; return OR; &#125;</span><br></pre></td></tr></table></figure>
+<p>其他照旧操作。</p>
+<h2 id="语义分析">语义分析</h2>
+<p>逻辑运算中的短路求值属于这里，暂时不考虑。</p>
+<h2 id="IR-生成-3">IR 生成</h2>
+<p>整理了一下比较/逻辑运算符与 IR 指令间的关系，需注意 IR 中的 <code>and</code>、<code>or</code> 是按位与或，和逻辑与或 <code>&amp;&amp;</code>、<code>||</code> 不同，所以要将多条 IR 语句组合来实现逻辑与或。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">运算符</th>
+<th style="text-align:left">IR 指令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>a &gt; b</code></td>
+<td style="text-align:left"><code>c = gt a, b</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a &lt; b</code></td>
+<td style="text-align:left"><code>c = lt a, b</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a &gt;= b</code></td>
+<td style="text-align:left"><code>c = ge a, b</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a &lt;= b</code></td>
+<td style="text-align:left"><code>c = le a, b</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a != b</code></td>
+<td style="text-align:left"><code>c = ne a, b</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a == b</code></td>
+<td style="text-align:left"><code>c = eq a, b</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a &amp;&amp; b</code></td>
+<td style="text-align:left"><code>c = ne a, 0</code>; <code>d = ne b, 0</code>; <code>e = and c, d</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>a || b</code></td>
+<td style="text-align:left"><code>c = ne a, 0</code>; <code>d = ne b, 0</code>; <code>e = or c, d</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="RISC-V-生成-3">RISC-V 生成</h2>
+<p>本来按照前面的写法继续即可，但写完后 <code>riscv.cpp</code> 达到了近 500 行，看着大量的重复代码…我就知道它已经是一座潜力无穷的小屎山了…重构！</p>
+<p>针对 RISC-V 三元操作指令定义工具函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取参数对应的寄存器</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ParamReg</span><span class="params">(std::string param)</span></span>;</span><br><span class="line"><span class="comment">// target 应给存到哪个寄存器</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">TargetReg</span><span class="params">(<span class="type">int</span> param1, <span class="type">int</span> param2)</span></span>;</span><br><span class="line"><span class="comment">// 生成三操作数指令</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ThreeOp</span><span class="params">(ValueIR_2&amp; value, std::string opcode)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><code>riscv.cpp</code> 成功减少到 160 余行。</p>
+<h1>开测  (￣︶￣)</h1>
+<p>也是通过 Lab3 咯<br>
+<img src="/img/战编译/Lab3_pass.jpg" width=300px></p>
+<h1>总结</h1>
+<p>关键内容：</p>
+<ul>
+<li>选择每个规则一个 AST</li>
+<li>Visitor 模式实现对不同派生类调用不同接口函数</li>
+<li>Visitor 类中添加成员实现不同接口间数据传递</li>
+<li>IR 生成时用栈传递临时符号和数值</li>
+<li>RISC-V 生成实现了无脑的寄存器重用，定义工具函数进行了重构</li>
+</ul>
+<p>和 Lab2 相比，从 AST 生成 IR 的函数美观了许多，转换过程也从简单的换格式变成了有栈参与的表达式计算过程，这也让我感觉到 IR 确实是有用的。</p>
+<p>然而 IR 的数据结构仍然过于简单，看起来难以支持更复杂的 AST；从 IR 到 RISC-V 的过程也依然是简单的替换。</p>
+<p>从 AST 到 IR 再到 RISC-V，这一系列步骤的作用，还有待在后面的 Lab 中继续探索。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PKUcompiler/">PKUcompiler</a><a class="post-meta__tags" href="/tags/CSdiy/">CSdiy</a></div><div class="post-share"><div class="social-share" data-image="/img/cover/Compilers.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/02/23/games101-1/" title="GAMES101 作业 (1)"><img class="cover" src="/img/cover/games101.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">GAMES101 作业 (1)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 1，填写了模型变换和透视投影变换的矩阵，没做拓展作业</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/02/22/PKUcompiler-Lab2/" title="PKU 编译原理实践 Lab2"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-22</div><div class="info-item-2">PKU 编译原理实践 Lab2</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第二个测试，实现了从最简单的 Koopa IR 生成最简单的 RISC-V</div></div></div></a><a class="pagination-related" href="/2026/02/21/PKUcompiler-Lab1/" title="PKU 编译原理实践 Lab1"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">PKU 编译原理实践 Lab1</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第一个测试，实现了最简单的 Koopa IR 生成</div></div></div></a><a class="pagination-related" href="/2026/02/20/games101-0/" title="GAMES101 作业 (0)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-20</div><div class="info-item-2">GAMES101 作业 (0)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 0，以及 Eigen 库的一些基本操作</div></div></div></a><a class="pagination-related" href="/2026/02/23/games101-1/" title="GAMES101 作业 (1)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-23</div><div class="info-item-2">GAMES101 作业 (1)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 1，填写了模型变换和透视投影变换的矩阵，没做拓展作业</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LesserLordKusanali1027</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LesserLordKusanali1027"><i class="fab fa-github"></i><span>我的 GitHub</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Lab3，重构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">复习</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">一元表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">词法分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">3.2.</span> <span class="toc-text">语法分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IR-%E7%94%9F%E6%88%90"><span class="toc-number">3.3.</span> <span class="toc-text">IR 生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E6%8E%A5%E5%8F%A3"><span class="toc-number">3.3.1.</span> <span class="toc-text">改接口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B0%E7%9A%84-IR-%E7%94%9F%E6%88%90%E9%80%BB%E8%BE%91"><span class="toc-number">3.3.2.</span> <span class="toc-text">新的 IR 生成逻辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E6%80%A7%E6%88%90%E6%9E%9C"><span class="toc-number">3.3.3.</span> <span class="toc-text">阶段性成果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RISC-V-%E7%94%9F%E6%88%90"><span class="toc-number">3.4.</span> <span class="toc-text">RISC-V 生成</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">算术表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">4.1.</span> <span class="toc-text">词法&#x2F;语法分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IR-%E7%94%9F%E6%88%90-2"><span class="toc-number">4.2.</span> <span class="toc-text">IR 生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RISC-V-%E7%94%9F%E6%88%90-2"><span class="toc-number">4.3.</span> <span class="toc-text">RISC-V 生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E6%80%A7%E6%88%90%E6%9E%9C-2"><span class="toc-number">4.4.</span> <span class="toc-text">阶段性成果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">比较和逻辑表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90-2"><span class="toc-number">5.1.</span> <span class="toc-text">词法&#x2F;语法分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90"><span class="toc-number">5.2.</span> <span class="toc-text">语义分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IR-%E7%94%9F%E6%88%90-3"><span class="toc-number">5.3.</span> <span class="toc-text">IR 生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RISC-V-%E7%94%9F%E6%88%90-3"><span class="toc-number">5.4.</span> <span class="toc-text">RISC-V 生成</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">开测  (￣︶￣)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/02/PKUcompiler-Lab3/" title="PKU 编译原理实践 Lab3"><img src="/img/cover/Compilers.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PKU 编译原理实践 Lab3"/></a><div class="content"><a class="title" href="/2026/03/02/PKUcompiler-Lab3/" title="PKU 编译原理实践 Lab3">PKU 编译原理实践 Lab3</a><time datetime="2026-03-02T11:47:27.000Z" title="发表于 2026-03-02 19:47:27">2026-03-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/23/games101-1/" title="GAMES101 作业 (1)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (1)"/></a><div class="content"><a class="title" href="/2026/02/23/games101-1/" title="GAMES101 作业 (1)">GAMES101 作业 (1)</a><time datetime="2026-02-23T06:35:51.000Z" title="发表于 2026-02-23 14:35:51">2026-02-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/22/PKUcompiler-Lab2/" title="PKU 编译原理实践 Lab2"><img src="/img/cover/Compilers.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PKU 编译原理实践 Lab2"/></a><div class="content"><a class="title" href="/2026/02/22/PKUcompiler-Lab2/" title="PKU 编译原理实践 Lab2">PKU 编译原理实践 Lab2</a><time datetime="2026-02-22T12:34:52.000Z" title="发表于 2026-02-22 20:34:52">2026-02-22</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Background2.jpg);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By LesserLordKusanali1027</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
