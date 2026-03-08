@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>PKU 编译原理实践 Lab5 | Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶</title><meta name="author" content="LesserLordKusanali1027"><meta name="copyright" content="LesserLordKusanali1027"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="PKU 编译原理实践 第五个测试，为语法分析器增加了多层符号表，实现了语句块和作用域的处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PKU 编译原理实践 Lab5">
+<meta property="og:url" content="http://example.com/2026/03/08/PKUcompiler-Lab5/index.html">
+<meta property="og:site_name" content="Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶">
+<meta property="og:description" content="PKU 编译原理实践 第五个测试，为语法分析器增加了多层符号表，实现了语句块和作用域的处理">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cover/Compilers.png">
+<meta property="article:published_time" content="2026-03-08T07:52:23.000Z">
+<meta property="article:modified_time" content="2026-03-08T07:55:22.648Z">
+<meta property="article:author" content="LesserLordKusanali1027">
+<meta property="article:tag" content="PKUcompiler">
+<meta property="article:tag" content="CSdiy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cover/Compilers.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PKU 编译原理实践 Lab5",
+  "url": "http://example.com/2026/03/08/PKUcompiler-Lab5/",
+  "image": "http://example.com/img/cover/Compilers.png",
+  "datePublished": "2026-03-08T07:52:23.000Z",
+  "dateModified": "2026-03-08T07:55:22.648Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LesserLordKusanali1027",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2026/03/08/PKUcompiler-Lab5/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PKU 编译原理实践 Lab5',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Background2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"></a><a class="nav-page-title" href="/"><span class="site-name">PKU 编译原理实践 Lab5</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">PKU 编译原理实践 Lab5</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-08T07:52:23.000Z" title="发表于 2026-03-08 15:52:23">2026-03-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-08T07:55:22.648Z" title="更新于 2026-03-08 15:55:22">2026-03-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%88%98%E7%BC%96%E8%AF%91/">战编译</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>Lab5，轻松</h1>
+<p>周末用 2 个多小时就搞定了，真是让人愉快啊 (¯▿¯)</p>
+<h1>概述</h1>
+<p>目标是加入对语句块和作用域的处理，使语句块内可以定义同名常量/变量，会把语句块外的暂时覆盖掉。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span>, b = <span class="number">2</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line">        b = b + a; <span class="comment">// 这里的a是2了，而不是外面的1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1>增加语句块、作用域</h1>
+<p>只修改了 Stmt 的语法规则，在原本的赋值语句、返回语句基础上加入了<strong>没用表达式</strong>和<strong>语句块</strong>。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Stmt ::= LVal &quot;=&quot; Exp &quot;;&quot;</span><br><span class="line">       | [Exp] &quot;;&quot; // 没用表达式</span><br><span class="line">       | Block // 语句块</span><br><span class="line">       | &quot;return&quot; [Exp] &quot;;&quot;;</span><br></pre></td></tr></table></figure>
+<p>示例程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        a = <span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> a = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="词法-语法分析">词法/语法分析</h2>
+<p>词法分析不用变，语法增加了 <code>[Exp]</code> 表示 0 次或 1 次，选择用空指针实现 0 次。</p>
+<p>由语法规则可知现在单个分号 <code>;</code>、单个表达式 <code>1+2;</code> 都是合法的语句了，不过它们结束后不会留下任何影响，只是计算、然后消亡。</p>
+<p>修改 StmtAST 和 sysy.y 即可，轻松。</p>
+<h2 id="语义分析">语义分析</h2>
+<p>Lab5 的大部分工作都在语义分析上，或者说，<strong>语句块和作用域</strong>就是在语义分析中处理的。</p>
+<p>设计如下：</p>
+<ol>
+<li>建立<strong>多层符号表</strong>，像栈一样增减，每进入一个语句块，push 一个新符号表，将该语句块内<strong>定义的常量和变量</strong>存入该符号表中；离开语句块时将该符号表 pop</li>
+<li>会存在<strong>同名常量</strong>，执行<strong>常量折叠</strong>需要获取某个常量值时，从栈顶往栈底查找，选择距离当前层次<strong>最近</strong>的常量的值</li>
+<li>会存在<strong>同名变量</strong>，为了让 IR 顺利生成，需要为所有的变量名<strong>添加注解</strong>，或者说<strong>添加编号</strong>
+<ul>
+<li>比如变量 <code>a</code> 被第一次定义时，VarDefAST 中的名字要改成 <code>a_1</code>；第二次定义时就是 <code>a_2</code></li>
+<li>如果有常量也叫 <code>a</code>，不需要参与编号和替换</li>
+<li>之后赋值、计算用到变量名 <code>a</code> 时，从下往上查符号表，最近的是 <code>a_2</code> ，就把 LVal 的变量名替换成 <code>a_2</code>；如果是 <code>a_3</code>，就替换成 <code>a_3</code>…</li>
+</ul>
+</li>
+<li>还有一些用于报错检测的接口</li>
+</ol>
+<p><strong>就近常量折叠</strong>+<strong>同名变量注解</strong>，解决了<strong>语句块</strong>要面临的问题——多个量用了同样的名字所以遇到某个名字时不知道它代表的是哪个量：</p>
+<ul>
+<li>以下面程序为例：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> b = <span class="number">2</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        a = b;</span><br><span class="line">        <span class="type">const</span> <span class="type">int</span> b = <span class="number">3</span>;</span><br><span class="line">        <span class="type">int</span> a = b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>最后会变成：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a_1 = <span class="number">1</span>;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> b = <span class="number">2</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        a_1 = <span class="number">2</span>; <span class="comment">// 用外层的常量 b 折叠，内层的常量 b 还未定义</span></span><br><span class="line">        <span class="type">const</span> <span class="type">int</span> b = <span class="number">3</span>;</span><br><span class="line">        <span class="type">int</span> a_2 = <span class="number">3</span>; <span class="comment">// 用内层的常量 b 折叠</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a_1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>常量被就近折叠成数字，变量被编上号码，没有给 IR 生成器留下任何歧义，它看到的只剩<strong>不同变量不同名</strong>，<strong>常量已折叠不用管</strong>的清晰程序了。</li>
+</ul>
+<p>而<strong>作用域</strong>的规则在<strong>多层符号表</strong>的 push 和 pop 中自然地实现：</p>
+<ul>
+<li>出了某个语句块，它的符号表被 pop 了，里面的符号自然没法再用</li>
+<li>当某个符号被嵌套的语句块多次定义时，多层符号表由下往上查询的规则，肯定会选择定义在最内层定义的符号</li>
+</ul>
+<p>看吧，没有符号会受伤的世界达成了 ┐(￣ー￣)┌</p>
+<h2 id="IR-生成">IR 生成</h2>
+<p>到了这里，语句块和作用域的问题已经解决不用再管了，理论上增改操作 <code>StmtAST_2</code>、<code>StmtAST_3</code>、<code>StmtAST_4</code> 节点的函数即可。</p>
+<p>但之后发现生成的 IR 不完整，因为我原来是在 BlockAST 中 new BasicBlockIR 语句块的 (如下)，但是 BlockAST 和 IR 的语句块 <code>BasicBlockIR</code> 并不是一一对应的…</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">Visitor_ast::ir_init</span><span class="params">(BlockAST&amp; block)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span> -&gt; basic_block = <span class="keyword">new</span> <span class="built_in">BasicBlockIR</span>();</span><br><span class="line">    <span class="keyword">this</span> -&gt; basic_block -&gt; name = <span class="string">&quot;%entry&quot;</span>;</span><br><span class="line">    block.blockitemlist.<span class="built_in">get</span>() -&gt; <span class="built_in">accept</span>(*<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>…比如下面的示例程序中，虽然 BlockAST 中出现了嵌套的 BlockAST，但是它们仍然位于同一个 BasicBlockIR 中。我之前的写法会在遇到嵌套的 BlockAST 时将 <code>int a = 1;</code> 生成的 IR 清除，所以出现了 IR 不完整。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        a = <span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> a = <span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后我把 new BasicBlockIR 放在了 FuncDefAST 中，让整个函数来做这件事，但这只是权宜之计，之后还需要修改的。</p>
+<p>阶段性成果：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  @a_1 = alloc i32</span><br><span class="line">  store 1, @a_1</span><br><span class="line">  store 2, @a_1</span><br><span class="line">  @a_2 = alloc i32</span><br><span class="line">  store 3, @a_2</span><br><span class="line">  %0 = load @a_1</span><br><span class="line">  ret %0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="RISC-V-生成">RISC-V 生成</h2>
+<p>完全不用改！</p>
+<h1>测 (￣^￣)</h1>
+<p>轻松通过 Lab5<br>
+<img src="/img/战编译/Lab5_pass.jpg" width=300px></p>
+<h1>总结</h1>
+<p>关键内容：</p>
+<ul>
+<li>为语义分析器新增了<strong>多层符号表</strong>，可以处理语句块和作用域了</li>
+</ul>
+<p>就到这里，祝周末愉快~~</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PKUcompiler/">PKUcompiler</a><a class="post-meta__tags" href="/tags/CSdiy/">CSdiy</a></div><div class="post-share"><div class="social-share" data-image="/img/cover/Compilers.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/03/06/PKUcompiler-Lab4/" title="PKU 编译原理实践 Lab4"><img class="cover" src="/img/cover/Compilers.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">PKU 编译原理实践 Lab4</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第四个测试，实现了常量变量的使用，增加了语义分析器，并改进了其他模块</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/06/PKUcompiler-Lab4/" title="PKU 编译原理实践 Lab4"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-06</div><div class="info-item-2">PKU 编译原理实践 Lab4</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第四个测试，实现了常量变量的使用，增加了语义分析器，并改进了其他模块</div></div></div></a><a class="pagination-related" href="/2026/03/02/PKUcompiler-Lab3/" title="PKU 编译原理实践 Lab3"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-02</div><div class="info-item-2">PKU 编译原理实践 Lab3</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第三个测试，实现了对表达式的处理，并重构了部分模块</div></div></div></a><a class="pagination-related" href="/2026/02/21/PKUcompiler-Lab1/" title="PKU 编译原理实践 Lab1"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">PKU 编译原理实践 Lab1</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第一个测试，实现了最简单的 Koopa IR 生成</div></div></div></a><a class="pagination-related" href="/2026/02/22/PKUcompiler-Lab2/" title="PKU 编译原理实践 Lab2"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-22</div><div class="info-item-2">PKU 编译原理实践 Lab2</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第二个测试，实现了从最简单的 Koopa IR 生成最简单的 RISC-V</div></div></div></a><a class="pagination-related" href="/2026/02/23/games101-1/" title="GAMES101 作业 (1)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-23</div><div class="info-item-2">GAMES101 作业 (1)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 1，填写了模型变换和透视投影变换的矩阵，没做拓展作业</div></div></div></a><a class="pagination-related" href="/2026/02/20/games101-0/" title="GAMES101 作业 (0)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-20</div><div class="info-item-2">GAMES101 作业 (0)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 0，以及 Eigen 库的一些基本操作</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LesserLordKusanali1027</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LesserLordKusanali1027"><i class="fab fa-github"></i><span>我的 GitHub</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Lab5，轻松</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">增加语句块、作用域</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">词法&#x2F;语法分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90"><span class="toc-number">3.2.</span> <span class="toc-text">语义分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IR-%E7%94%9F%E6%88%90"><span class="toc-number">3.3.</span> <span class="toc-text">IR 生成</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RISC-V-%E7%94%9F%E6%88%90"><span class="toc-number">3.4.</span> <span class="toc-text">RISC-V 生成</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">测 (￣^￣)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/08/PKUcompiler-Lab5/" title="PKU 编译原理实践 Lab5"><img src="/img/cover/Compilers.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PKU 编译原理实践 Lab5"/></a><div class="content"><a class="title" href="/2026/03/08/PKUcompiler-Lab5/" title="PKU 编译原理实践 Lab5">PKU 编译原理实践 Lab5</a><time datetime="2026-03-08T07:52:23.000Z" title="发表于 2026-03-08 15:52:23">2026-03-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/06/PKUcompiler-Lab4/" title="PKU 编译原理实践 Lab4"><img src="/img/cover/Compilers.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PKU 编译原理实践 Lab4"/></a><div class="content"><a class="title" href="/2026/03/06/PKUcompiler-Lab4/" title="PKU 编译原理实践 Lab4">PKU 编译原理实践 Lab4</a><time datetime="2026-03-06T03:57:19.000Z" title="发表于 2026-03-06 11:57:19">2026-03-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/02/PKUcompiler-Lab3/" title="PKU 编译原理实践 Lab3"><img src="/img/cover/Compilers.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PKU 编译原理实践 Lab3"/></a><div class="content"><a class="title" href="/2026/03/02/PKUcompiler-Lab3/" title="PKU 编译原理实践 Lab3">PKU 编译原理实践 Lab3</a><time datetime="2026-03-02T11:47:27.000Z" title="发表于 2026-03-02 19:47:27">2026-03-02</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Background2.jpg);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By LesserLordKusanali1027</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
