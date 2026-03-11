@@ -1,0 +1,327 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>PKUcompiler-Lab6 | Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶</title><meta name="author" content="LesserLordKusanali1027"><meta name="copyright" content="LesserLordKusanali1027"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="PKU 编译原理实践 第六个测试，添加了 if-else 语句处理，实现了逻辑表达式短路求值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PKUcompiler-Lab6">
+<meta property="og:url" content="http://example.com/2026/03/11/PKUcompiler-Lab6/index.html">
+<meta property="og:site_name" content="Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶">
+<meta property="og:description" content="PKU 编译原理实践 第六个测试，添加了 if-else 语句处理，实现了逻辑表达式短路求值">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cover/Compilers.png">
+<meta property="article:published_time" content="2026-03-11T10:29:24.000Z">
+<meta property="article:modified_time" content="2026-03-11T10:35:51.864Z">
+<meta property="article:author" content="LesserLordKusanali1027">
+<meta property="article:tag" content="PKUcompiler">
+<meta property="article:tag" content="CSdiy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cover/Compilers.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PKUcompiler-Lab6",
+  "url": "http://example.com/2026/03/11/PKUcompiler-Lab6/",
+  "image": "http://example.com/img/cover/Compilers.png",
+  "datePublished": "2026-03-11T10:29:24.000Z",
+  "dateModified": "2026-03-11T10:35:51.864Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LesserLordKusanali1027",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2026/03/11/PKUcompiler-Lab6/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PKUcompiler-Lab6',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Background2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"></a><a class="nav-page-title" href="/"><span class="site-name">PKUcompiler-Lab6</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">PKUcompiler-Lab6</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-03-11T10:29:24.000Z" title="发表于 2026-03-11 18:29:24">2026-03-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-11T10:35:51.864Z" title="更新于 2026-03-11 18:35:51">2026-03-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%88%98%E7%BC%96%E8%AF%91/">战编译</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>Lab6，设计</h1>
+<p>认真思考中 (￣～￣)…%!&amp;#ﾟ☆*ﾟ</p>
+<h1>概述</h1>
+<p>这次要实现 <code>if/else</code> 的处理，之前几次 Lab 主要聚焦于语法分析、语义分析的部分，在 IR 生成、RISC-V 生成上只是简单增加，但这次应该要做比较明显的改动了，因为<strong>分支</strong>、<strong>跳转</strong>，来了。</p>
+<p><strong>注意</strong>：这里 <code>if</code>-<code>else</code> 要遵循<strong>就近匹配规则</strong>，即 <code>else</code> 会与前面距它最近的未匹配 <code>if</code> 进行匹配。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (x) <span class="keyword">if</span> (y) ...; <span class="keyword">else</span> ...;</span><br><span class="line"><span class="comment">// 等价于</span></span><br><span class="line"><span class="keyword">if</span> (x) &#123;</span><br><span class="line">    <span class="keyword">if</span> (y) &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 而不是</span></span><br><span class="line"><span class="keyword">if</span> (x) &#123;</span><br><span class="line">    <span class="keyword">if</span> (y) &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1>处理 if/else</h1>
+<p>表面上，为 Stmt 增加了一条语法规则。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stmt ::= &quot;if&quot; &quot;(&quot; Exp &quot;)&quot; Stmt [&quot;else&quot; Stmt]</span><br></pre></td></tr></table></figure>
+<h2 id="词法分析">词法分析</h2>
+<p>新增关键字 <code>if</code>、<code>else</code>，在 <code>sysy.l</code> 中添加即可。</p>
+<h2 id="语法分析">语法分析</h2>
+<p>如果就用语法规则 <code>&quot;if&quot; &quot;(&quot; Exp &quot;)&quot; Stmt [&quot;else&quot; Stmt]</code>，某些情况会导致 bison <strong>移进/归约报错</strong> (bison 这里用的是自底向上的 LR 方法)，比如下面的式子，<code>else</code> 跟在哪一个 <code>if</code> 下面都是符合语法规则的…</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (x) <span class="keyword">if</span> (y) ...; <span class="keyword">else</span> ...;</span><br></pre></td></tr></table></figure>
+<p>…于是有了两种展开，带来了语法二义性。这个问题有个专门的名字：<strong>空悬 else</strong>。<br>
+<img src="/img/战编译/Lab6_ambiguity.jpg" width=280px></p>
+<p>所以不能让 <code>else</code> 随便跟哪个 <code>if</code> 都行，于是有了<strong>就近匹配规则</strong>，为了将这个规则加入语法，将原本的语法规则<strong>拆分</strong>：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Stmt          ::= MatchedStmt | UnmatchedStmt</span><br><span class="line"></span><br><span class="line">MatchedStmt   ::= 原有的规则</span><br><span class="line">                | &quot;if&quot; &quot;(&quot; Exp &quot;)&quot; MatchedStmt &quot;else&quot; MatchedStmt</span><br><span class="line"></span><br><span class="line">UnmatchedStmt ::= &quot;if&quot; &quot;(&quot; Exp &quot;)&quot; Stmt</span><br><span class="line">                | &quot;if&quot; &quot;(&quot; Exp &quot;)&quot; MatchedStmt &quot;else&quot; UnmatchedStmt</span><br></pre></td></tr></table></figure>
+<p><code>MatchedStmt</code> 表示结尾没有单独的 <code>if</code>，<code>UnmatchedStmt</code> 则表示有单独的 <code>if</code>，这样 <code>&quot;if&quot; &quot;(&quot; Exp &quot;)&quot; UnmatchedStmt &quot;else&quot; ...</code> 这种语法就被杜绝了，语法二义性也随之解决~~</p>
+<h2 id="语义分析">语义分析</h2>
+<p>只要把原来 StmtAST 上做的函数移植到 MatchedStmtAST 上，再为新类型添加函数即可，报错检测、常量折叠、语句块和作用域都是已经做好了的，不用动其他的地方了。</p>
+<h2 id="IR-生成">IR 生成</h2>
+<h3 id="实现">实现</h3>
+<p>从这里开始，程序就不再是线性的了，因为 if-else 带来了分支。IR 中，可以通过<strong>基本块</strong>和<strong>控制转移指令</strong>的配合，达到分支效果。</p>
+<p>只有一个基本块时，我在 <code>FuncDefAST</code> 上新建 <code>%entry</code> 基本块，又在返回前把这个基本块塞进 IR 函数中；而现在，我需要考虑在哪里创建用于分支的基本块。</p>
+<p>好消息是，分支的几个基本块的相对关系是很一致的，无非两种格式：<br>
+<img src="/img/战编译/Lab6_branch.jpg" width=400px></p>
+<p>我把新建语句块的任务分给了 <code>MatchedStmtAST_5</code>、<code>UnmatchedStmtAST_1</code>、<code>UnmatchedStmtAST_2</code> 这几个分支语句的节点，它们将负责创建 <code>%then</code>/<code>%else</code>，然后调用对应子节点，最后创建 <code>%end</code> ，之后的节点会在 <code>%end</code> 块上继续放指令。</p>
+<h3 id="Bug1">Bug1</h3>
+<p>如果程序在 if-else 中返回，那么该基本块就会将 <code>ret</code> 和 <code>jump</code> 指令依次放在结尾 (如下)。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (a) &#123;</span><br><span class="line">        <span class="keyword">return</span> a + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  @a_1 = alloc i32</span><br><span class="line">  store 2, @a_1</span><br><span class="line">  %0 = load @a_1</span><br><span class="line">  br %0, %then, %end</span><br><span class="line"></span><br><span class="line">%then:</span><br><span class="line">  %1 = load @a_1</span><br><span class="line">  %2 = add %1, 1</span><br><span class="line">  ret %2 # 出现问题了</span><br><span class="line">  jump %end</span><br><span class="line"></span><br><span class="line">%end:</span><br><span class="line">  %3 = load @a_1</span><br><span class="line">  ret %3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是 IR 基本块的规则是：只能以 <code>br</code>/<code>ret</code>/<code>jump</code> 结尾且<strong>这些指令只能出现在结尾、一次</strong>。</p>
+<p>有两种选择：</p>
+<ul>
+<li>新增一个变量 <code>if_return</code> 记录 if-else 基本块中是否执行了 <code>ret</code> ，如果执行了那就不用再添加 <code>jump</code> 了</li>
+<li>给所有的 ret 后添加另一个标签 (如下)，简单无脑</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">%then:</span><br><span class="line">  %1 = load @a_1</span><br><span class="line">  %2 = add %1, 1</span><br><span class="line">  ret %2</span><br><span class="line">%return:</span><br><span class="line">  jump %end</span><br></pre></td></tr></table></figure>
+<p>第二个选项有个额外的好处是可以将这种程序处理成合法的 IR ：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> a; <span class="comment">// return 后面仍有指令</span></span><br><span class="line">    a = a + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开始我觉得选项二太无脑了，想选一，但是后来发现一在处理 return 后还有指令的情况时逻辑有些复杂，所以最后还是选了二，这样后面的 Bug2 也顺带解决了。</p>
+<p>嗯，现在合法了。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  @a_1 = alloc i32</span><br><span class="line">  store 2, @a_1</span><br><span class="line">  %0 = load @a_1</span><br><span class="line">  br %0, %then_1, %end_1</span><br><span class="line"></span><br><span class="line">%then_1:</span><br><span class="line">  %1 = load @a_1</span><br><span class="line">  %2 = add %1, 1</span><br><span class="line">  ret %2</span><br><span class="line"></span><br><span class="line">%return_1:</span><br><span class="line">  jump %end_1 # jump 被放到另一个基本块中，虽然执行不到</span><br><span class="line"></span><br><span class="line">%end_1:</span><br><span class="line">  %3 = load @a_1</span><br><span class="line">  ret %3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Bug2">Bug2</h3>
+<p>测试集位于 <code>/opt/bin/testcases</code> 中。</p>
+<p>现在 <code>5_more_logical</code> 和 <code>6_multiple_returns</code> 还会报错，查看源文件，发现是由于 <code>return</code> 后又出现了其他指令而没有另建块，导致 IR 中的 <code>ret</code> 处在了基本块中间，欸，我担心的问题这么快就出现了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 真是丑陋的程序</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">5</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  ret 5 # 三条 ret 位于一个基本块显然是不行的</span><br><span class="line">  ret 4</span><br><span class="line">  ret 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到这里我决定放弃思考，拥抱无脑方法，多余的基本块在优化环节删吧。</p>
+<p>这样可以得到如下 IR：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  ret 5</span><br><span class="line"></span><br><span class="line">%return_1:</span><br><span class="line">  ret 4</span><br><span class="line"></span><br><span class="line">%return_2:</span><br><span class="line">  ret 3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="RISC-V-生成">RISC-V 生成</h2>
+<p>只需要添加对两条新 IR 指令的处理：</p>
+<ol>
+<li>
+<p><code>br %num, %target1, %target2</code></p>
+<p>-&gt; <code>lw ..., ...; bnez t0, target1; j target2</code></p>
+</li>
+<li>
+<p><code>jump %target</code></p>
+<p>-&gt; <code>j target</code></p>
+</li>
+</ol>
+<p>还有一些代码细节的调整。</p>
+<p>现在已经可以通过本地 8 个测试用例了，接下来要做一个<strong>小优化</strong>。</p>
+<h1>短路求值</h1>
+<h2 id="实现-2">实现</h2>
+<p>短路求值，是 C/C++ 中一个很熟悉的概念，这里的含义也一样，就是指在计算含有逻辑运算符 <code>||</code> 和 <code>&amp;&amp;</code> 的算式时，当参与计算的量满足某些条件，可以<strong>提前出结果</strong>。一般计算顺序从左向右，有两种情况：</p>
+<ul>
+<li><code>a || b || ...</code> 中，当左边出现<strong>非</strong> <code>0</code> 时，提前得到结果为 <code>1</code></li>
+<li><code>a &amp;&amp; b &amp;&amp; ...</code> 中，当左边出现 <code>0</code> 时，提前得到结果为 <code>0</code></li>
+</ul>
+<p>借助分支和跳转指令是可以实现的，但要想下如何排布这些指令才能达到目的，我的设计如下，以 <code>a &amp;&amp; b &amp;&amp; c</code> 格式为例。<br>
+<img src="/img/战编译/Lab6_shortcut.jpg" width=500px></p>
+<p><strong>对上图的说明</strong>：</p>
+<ol>
+<li>五个基本块，序号是它们的生成顺序。</li>
+<li>每个子表达式 <code>exp&lt;num&gt;</code> 对应一个基本块，这里 <code>exp1</code>、<code>exp2</code>、<code>exp3</code> 各对应基本块 1、2、3 ，基本块内有<strong>表达式计算</strong>和 <strong><code>br</code> 指令</strong> 两部分。</li>
+<li><code>br</code> 指令用于短路求值跳转，这里当结果 a/b 为 0 时，<code>br</code> 就会跳转到短路求值块 <code>and_sce_1</code> 中，将结果提前赋值为 0</li>
+<li>如果不符合短路求值条件，就会一直沿着 <code>sub_exp</code> 执行，直到 <code>sub_exp_2</code> 算出结果后跳转到结束块</li>
+<li><code>and_exit_1</code> 为结束块，不论是经过短路求值还是正常算完，最后都会跳到这里，继续后续计算</li>
+</ol>
+<p><strong>基本块命名的约定</strong>：</p>
+<ul>
+<li><code>&amp;&amp;</code>、<code>||</code> 连接的每个式子对应一个基本块 <code>sub_exp</code>；<strong>短路求值</strong>基本块为 <code>and_sce</code> 和 <code>or_sce</code>；<strong>结束块</strong>为 <code>and_exit</code> 和 <code>or_exit</code></li>
+<li>有了块名的约定，前面的 <code>br</code>、<code>jump</code> 指令就可以提前知晓跳转目标，不需要等到目标块创建后再<strong>回填</strong>。代价嘛，就是要保存的状态量增加了 5 个</li>
+</ul>
+<p><strong>细节</strong>：上例中最后结果 c 的求出有两条路径：</p>
+<ol>
+<li>
+<p>全部算完得到结果 c</p>
+</li>
+<li>
+<p>短路求值得到 c</p>
+<p>那么，如果 c 是保存在<strong>临时符号</strong>中的，IR 代码中会有两处为 %c 赋值的地方，<strong>这是违反 Koopa IR 的单赋值性质的</strong>，所以要<strong>用变量来存放结果</strong>了。这里约定结果存放在变量 <code>@sce_result</code> 中，直接在 IR 生成中添加即可。</p>
+<p>PS：因为其他的变量都在语义分析中被添加了编号，所以不用担心变量名冲突。</p>
+</li>
+</ol>
+<p><strong>代码实现</strong>：</p>
+<p>上面这些指令可以分成两部分，我称之为<strong>操作</strong>部分和<strong>善后</strong>部分。<br>
+<img src="/img/战编译/Lab6_shortcut_plus.jpg" width=500px></p>
+<ol>
+<li>对于 <code>&amp;&amp;</code> 短路求值
+<ul>
+<li>操作部分在 <code>LAndExpAST_2</code> 中生成，善后部分在 <code>LAndExpAST_2</code> 的上一级 <code>LOrExpAST_1</code>、<code>LOrExpAST_2</code> 中生成</li>
+<li>因为 <code>LAndExpAST_1</code> 不包含 <code>&amp;&amp;</code> 的计算，所以不需要使用短路求值，也不需要实现这个跳转结构。但是 <code>LOrExpAST</code> 下的 <code>landexp</code> 既可能是 1 也可能是 2，所以通过 <code>dynamic_cast&lt;&gt;</code> 来判断，只为 <code>LAndExpAST_2</code> 善后</li>
+</ul>
+</li>
+<li>对于 <code>||</code> 短路求值
+<ul>
+<li>操作部分在 <code>LOrExpAST_2</code> 中生成，善后部分在 <code>ExpAST</code> 中生成</li>
+<li>善后时同样要区分 <code>LOrExpAST_1</code> 和 <code>LOrExpAST_2</code>，只需要给 <code>LOrExpAST_2</code> 善后</li>
+</ul>
+</li>
+</ol>
+<p>至此，可以写代码咯 ᕦ(ò_óˇ)ᕤ</p>
+<h2 id="效果">效果</h2>
+<p>…现在，对于含有 <code>&amp;&amp;</code> 和 <code>||</code> 的计算，就可以生成短路求值结构的 IR 啦</p>
+<p>例一：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span> &amp;&amp; <span class="number">2</span> &amp;&amp; <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  @sce_result = alloc i32</span><br><span class="line">  @a_1 = alloc i32</span><br><span class="line">  br 1, %sub_exp_1, %and_sce_1</span><br><span class="line"></span><br><span class="line">%sub_exp_1:</span><br><span class="line">  %0 = ne 2, 0</span><br><span class="line">  %1 = ne 1, 0</span><br><span class="line">  %2 = and %0, %1</span><br><span class="line">  br %2, %sub_exp_2, %and_sce_1</span><br><span class="line"></span><br><span class="line">%sub_exp_2:</span><br><span class="line">  %3 = ne 3, 0</span><br><span class="line">  %4 = ne %2, 0</span><br><span class="line">  %5 = and %3, %4</span><br><span class="line">  store %5, @sce_result</span><br><span class="line">  jump %and_exit_1</span><br><span class="line"></span><br><span class="line">%and_sce_1:</span><br><span class="line">  store 0, @sce_result</span><br><span class="line">  jump %and_exit_1</span><br><span class="line"></span><br><span class="line">%and_exit_1:</span><br><span class="line">  %6 = load @sce_result</span><br><span class="line">  store %6, @a_1</span><br><span class="line">  ret 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例二：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span> || <span class="number">2</span> &amp;&amp; <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  @sce_result = alloc i32</span><br><span class="line">  @a_1 = alloc i32</span><br><span class="line">  br 1, %or_sce_1, %sub_exp_1</span><br><span class="line"></span><br><span class="line">%sub_exp_1:</span><br><span class="line">  br 2, %sub_exp_2, %and_sce_1</span><br><span class="line"></span><br><span class="line">%sub_exp_2:</span><br><span class="line">  %0 = ne 3, 0</span><br><span class="line">  %1 = ne 2, 0</span><br><span class="line">  %2 = and %0, %1</span><br><span class="line">  store %2, @sce_result</span><br><span class="line">  jump %and_exit_1</span><br><span class="line"></span><br><span class="line">%and_sce_1:</span><br><span class="line">  store 0, @sce_result</span><br><span class="line">  jump %and_exit_1</span><br><span class="line"></span><br><span class="line">%and_exit_1:</span><br><span class="line">  %3 = load @sce_result</span><br><span class="line">  %4 = ne %3, 0</span><br><span class="line">  %5 = ne 1, 0</span><br><span class="line">  %6 = or %4, %5</span><br><span class="line">  store %6, @sce_result</span><br><span class="line">  jump %or_exit_1</span><br><span class="line"></span><br><span class="line">%or_sce_1:</span><br><span class="line">  store 1, @sce_result</span><br><span class="line">  jump %or_exit_1</span><br><span class="line"></span><br><span class="line">%or_exit_1:</span><br><span class="line">  %7 = load @sce_result</span><br><span class="line">  store %7, @a_1</span><br><span class="line">  ret 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而对于不含 <code>&amp;&amp;</code> 和 <code>||</code> 的计算，还是原来那样简洁的结构哦。</p>
+<h1>测试</h1>
+<p>测试成功，短路求值目前表现很好 (´-ω-｀) ~呼<br>
+<img src="/img/战编译/Lab6_pass.jpg" width=300px></p>
+<h1>总结</h1>
+<p>关键内容：</p>
+<ul>
+<li>实现了对 <strong>if-else 分支指令</strong>的处理
+<ul>
+<li>修改了原本语法规则来解决<strong>空悬 else 问题</strong></li>
+<li>IR 生成中，确定了负责生成 then、else、end 基本块的节点</li>
+<li>IR 生成使用了<strong>在 ret 后添新建标签</strong>的无脑方法，解决了 return 后还有指令时带来的 bug</li>
+</ul>
+</li>
+<li>实现了含有 <code>&amp;&amp;</code>、<code>||</code> 的表达式的<strong>短路求值</strong>
+<ul>
+<li>IR 生成中，设计了一套<strong>排布 IR 代码的结构</strong>，借助 <code>br</code> 和 <code>jump</code></li>
+<li><strong>模块化</strong>做得不错 <s>(试图用专业术语来增加逼格)</s>，其他节点不需要关注短路求值结构内的细节</li>
+<li><strong>职责分离</strong>做得也不错，对于不含 <code>&amp;&amp;</code> 和 <code>||</code> 的表达式，短路求值不会启用</li>
+</ul>
+</li>
+</ul>
+<p>程序流不再是线性，IR 基本块从原来的一个变成了好多个，一些节点需要处理的内容大大增加。</p>
+<p>IR生成中，我逐渐感觉到<strong>递归的有趣</strong>…写单个节点时，我并不知道最后会写成什么样，而全写完开始测试了，就如同开奖前的瞬间，我才会<code>成功-&gt;欢呼</code>，或者<code>败北-&gt;debug</code>。</p>
+<p>一点点写递归的感悟：要有耐心，先自顶向下设计，再自底向上实现。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PKUcompiler/">PKUcompiler</a><a class="post-meta__tags" href="/tags/CSdiy/">CSdiy</a></div><div class="post-share"><div class="social-share" data-image="/img/cover/Compilers.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/03/08/PKUcompiler-Lab5/" title="PKU 编译原理实践 Lab5"><img class="cover" src="/img/cover/Compilers.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">PKU 编译原理实践 Lab5</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第五个测试，为语法分析器增加了多层符号表，实现了语句块和作用域的处理</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/02/21/PKUcompiler-Lab1/" title="PKU 编译原理实践 Lab1"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">PKU 编译原理实践 Lab1</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第一个测试，实现了最简单的 Koopa IR 生成</div></div></div></a><a class="pagination-related" href="/2026/02/22/PKUcompiler-Lab2/" title="PKU 编译原理实践 Lab2"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-22</div><div class="info-item-2">PKU 编译原理实践 Lab2</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第二个测试，实现了从最简单的 Koopa IR 生成最简单的 RISC-V</div></div></div></a><a class="pagination-related" href="/2026/03/08/PKUcompiler-Lab5/" title="PKU 编译原理实践 Lab5"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-08</div><div class="info-item-2">PKU 编译原理实践 Lab5</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第五个测试，为语法分析器增加了多层符号表，实现了语句块和作用域的处理</div></div></div></a><a class="pagination-related" href="/2026/03/02/PKUcompiler-Lab3/" title="PKU 编译原理实践 Lab3"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-02</div><div class="info-item-2">PKU 编译原理实践 Lab3</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第三个测试，实现了对表达式的处理，并重构了部分模块</div></div></div></a><a class="pagination-related" href="/2026/03/06/PKUcompiler-Lab4/" title="PKU 编译原理实践 Lab4"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-06</div><div class="info-item-2">PKU 编译原理实践 Lab4</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第四个测试，实现了常量变量的使用，增加了语义分析器，并改进了其他模块</div></div></div></a><a class="pagination-related" href="/2026/02/23/games101-1/" title="GAMES101 作业 (1)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-23</div><div class="info-item-2">GAMES101 作业 (1)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 1，填写了模型变换和透视投影变换的矩阵，没做拓展作业</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LesserLordKusanali1027</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">7</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LesserLordKusanali1027"><i class="fab fa-github"></i><span>我的 GitHub</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Lab6，设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">处理 if&#x2F;else</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">词法分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">3.2.</span> <span class="toc-text">语法分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90"><span class="toc-number">3.3.</span> <span class="toc-text">语义分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IR-%E7%94%9F%E6%88%90"><span class="toc-number">3.4.</span> <span class="toc-text">IR 生成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.4.1.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bug1"><span class="toc-number">3.4.2.</span> <span class="toc-text">Bug1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bug2"><span class="toc-number">3.4.3.</span> <span class="toc-text">Bug2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RISC-V-%E7%94%9F%E6%88%90"><span class="toc-number">3.5.</span> <span class="toc-text">RISC-V 生成</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">短路求值</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0-2"><span class="toc-number">4.1.</span> <span class="toc-text">实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E6%9E%9C"><span class="toc-number">4.2.</span> <span class="toc-text">效果</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/11/PKUcompiler-Lab6/" title="PKUcompiler-Lab6"><img src="/img/cover/Compilers.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PKUcompiler-Lab6"/></a><div class="content"><a class="title" href="/2026/03/11/PKUcompiler-Lab6/" title="PKUcompiler-Lab6">PKUcompiler-Lab6</a><time datetime="2026-03-11T10:29:24.000Z" title="发表于 2026-03-11 18:29:24">2026-03-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/08/PKUcompiler-Lab5/" title="PKU 编译原理实践 Lab5"><img src="/img/cover/Compilers.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PKU 编译原理实践 Lab5"/></a><div class="content"><a class="title" href="/2026/03/08/PKUcompiler-Lab5/" title="PKU 编译原理实践 Lab5">PKU 编译原理实践 Lab5</a><time datetime="2026-03-08T07:52:23.000Z" title="发表于 2026-03-08 15:52:23">2026-03-08</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/06/PKUcompiler-Lab4/" title="PKU 编译原理实践 Lab4"><img src="/img/cover/Compilers.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PKU 编译原理实践 Lab4"/></a><div class="content"><a class="title" href="/2026/03/06/PKUcompiler-Lab4/" title="PKU 编译原理实践 Lab4">PKU 编译原理实践 Lab4</a><time datetime="2026-03-06T03:57:19.000Z" title="发表于 2026-03-06 11:57:19">2026-03-06</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Background2.jpg);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By LesserLordKusanali1027</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
