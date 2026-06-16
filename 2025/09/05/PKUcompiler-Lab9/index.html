@@ -1,0 +1,700 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>PKU 编译原理实践 Lab9 | Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶</title><meta name="author" content="LesserLordKusanali1027"><meta name="copyright" content="LesserLordKusanali1027"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="PKU 编译原理实践 第九个测试，完成了一维、多维数组的初始化和使用，并将数组加入了函数参数中">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PKU 编译原理实践 Lab9">
+<meta property="og:url" content="http://example.com/2025/09/05/PKUcompiler-Lab9/index.html">
+<meta property="og:site_name" content="Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶">
+<meta property="og:description" content="PKU 编译原理实践 第九个测试，完成了一维、多维数组的初始化和使用，并将数组加入了函数参数中">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cover/Compilers.png">
+<meta property="article:published_time" content="2025-09-05T15:55:14.000Z">
+<meta property="article:modified_time" content="2026-06-15T14:38:45.631Z">
+<meta property="article:author" content="LesserLordKusanali1027">
+<meta property="article:tag" content="PKUcompiler">
+<meta property="article:tag" content="CSdiy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cover/Compilers.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PKU 编译原理实践 Lab9",
+  "url": "http://example.com/2025/09/05/PKUcompiler-Lab9/",
+  "image": "http://example.com/img/cover/Compilers.png",
+  "datePublished": "2025-09-05T15:55:14.000Z",
+  "dateModified": "2026-06-15T14:38:45.631Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LesserLordKusanali1027",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/09/05/PKUcompiler-Lab9/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'PKU 编译原理实践 Lab9',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/Background2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"></a><a class="nav-page-title" href="/"><span class="site-name">PKU 编译原理实践 Lab9</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">PKU 编译原理实践 Lab9</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2025-09-05T15:55:14.000Z" title="发表于 2025-09-05 23:55:14">2025-09-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%88%98%E7%BC%96%E8%AF%91/">战编译</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="Lab9，决战">Lab9，决战</h2>
+<p>为了没有眼泪的明天！冲锋！！！(╯°Д°)╯</p>
+<h2 id="一维数组">一维数组</h2>
+<p>可以定义、初始化一维数组，也可以通过下标来使用数组。</p>
+<p>示例程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> x[<span class="number">2</span>] = &#123;<span class="number">10</span>, <span class="number">20</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> arr[<span class="number">2</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="词法-语法分析">词法/语法分析</h3>
+<p>词法分析器不用改，表面上增改语法如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ConstDef      ::= IDENT [&quot;[&quot; ConstExp &quot;]&quot;] &quot;=&quot; ConstInitVal;</span><br><span class="line">ConstInitVal  ::= ConstExp | &quot;&#123;&quot; [ConstExp &#123;&quot;,&quot; ConstExp&#125;] &quot;&#125;&quot;;</span><br><span class="line">VarDef        ::= IDENT [&quot;[&quot; ConstExp &quot;]&quot;]</span><br><span class="line">                | IDENT [&quot;[&quot; ConstExp &quot;]&quot;] &quot;=&quot; InitVal;</span><br><span class="line">InitVal       ::= Exp | &quot;&#123;&quot; [Exp &#123;&quot;,&quot; Exp&#125;] &quot;&#125;&quot;;</span><br><span class="line"></span><br><span class="line">LVal          ::= IDENT [&quot;[&quot; Exp &quot;]&quot;];</span><br></pre></td></tr></table></figure>
+<p>处理掉 <code>[ ]</code> 和 <code>&#123; &#125;</code> 后：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ConstDef ::= IDENT &quot;=&quot; ConstInitVal | IDENT &quot;[&quot; ConstExp &quot;]&quot; &quot;=&quot; ConstInitVal;</span><br><span class="line">ConstInitVal ::= ConstExp | &quot;&#123;&quot; [ConstExpList] &quot;&#125;&quot;;</span><br><span class="line">ConstExpList ::= ConstExp | ConstExpList &quot;,&quot; ConstExp</span><br><span class="line"></span><br><span class="line">VarDef ::= IDENT </span><br><span class="line">         | IDENT &quot;[&quot; ConstExp &quot;]&quot;</span><br><span class="line">         | IDENT &quot;=&quot; InitVal</span><br><span class="line">         | IDENT &quot;[&quot; ConstExp &quot;]&quot; &quot;=&quot; InitVal;</span><br><span class="line">InitVal ::= Exp | &quot;&#123;&quot; [ExpList] &quot;&#125;&quot;;</span><br><span class="line">ExpList ::= Exp | ExpList &quot;,&quot; Exp;</span><br><span class="line"></span><br><span class="line">LVal ::= IDENT | IDENT &quot;[&quot; Exp &quot;]&quot;;</span><br></pre></td></tr></table></figure>
+<p>写进 <code>parser</code> 和 <code>sysy.y</code> 即可。</p>
+<h3 id="语义分析">语义分析</h3>
+<p>还是从<strong>符号表</strong>、<strong>常量折叠</strong>和<strong>报错检测</strong>三方面看。</p>
+<h4 id="符号表">符号表</h4>
+<p>之前符号表只需要记录 <code>int常量-int值</code> 和 <code>int变量-string名</code> ，现在还要记录数组。不过数组长度和初始化内容不用记，只需记类型和名字：</p>
+<ul>
+<li><code>int[]常量-string名</code></li>
+<li><code>int[]变量-string名</code></li>
+</ul>
+<p>此外，原来是通过内容是 <code>int值</code> 还是 <code>string名</code> 来区分 int 常量/变量两个类型的，但现在这四个类型不能再靠这种方法区分了，需要明确类型是 <code>int</code>/<code>const int</code>/<code>int[]</code>/<code>const int[]</code>，所以要修改符号表来支持这一点。</p>
+<h4 id="常量折叠">常量折叠</h4>
+<p>语义分析环节新增了一些需要计算表达式得出数字的地方，要把它们全部替换成单纯的数字，以便后续 IR 生成：</p>
+<ul>
+<li>数组定义时的大小，<code>const int a[...]</code>、<code>int a[...]</code></li>
+<li>常量数组的初始化内容，<code>const int a[] = &#123;...&#125;</code></li>
+<li><strong>全局变量数组</strong>的初始化内容，<code>int a[] = &#123;...&#125;</code></li>
+</ul>
+<p>而这些地方不用算出数字来折叠：</p>
+<ul>
+<li>
+<p>局部变量数组的初始化内容</p>
+</li>
+<li>
+<p>常量、变量数组的解引用，<code>a[1]</code>，即使是常量数组也不需要</p>
+<p>这也意味着数组解引用不能用于需要在语义分析环节算出的表达式中，比如：</p>
+<ul>
+<li>常量赋值 <code>const int b = a[1]</code> ×</li>
+<li>数组大小 <code>int b[a[1]]</code> ×</li>
+</ul>
+</li>
+</ul>
+<h4 id="报错检测">报错检测</h4>
+<p>虽然手册没有对报错检测做强制要求，但认真实现一下还挺有趣的，表面上看错误的语义多种多样，但仔细想想也并非无法归纳出一套逻辑。</p>
+<p>凭感觉看，都有哪些错误呢？</p>
+<p>有<strong>类型检查</strong>相关的：</p>
+<ul>
+<li><code>int[]</code> 不能给 <code>int</code> 赋值</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">10</span>];</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="type">int</span> b = a;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组变量不能单独出现在赋值语句左侧，因为怎么想也不可能直接给整个数组赋值</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">10</span>];</span><br><span class="line">a = ...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>常量数组不能在赋值语句中被赋值</li>
+<li><code>int</code> 不能用 <code>&#123;...&#125;</code> 初始化</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>int[]</code> 不能用数字初始化</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>] = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>有<strong>符号名称</strong>相关的：</p>
+<ul>
+<li>虽然 C/C++ 支持数组与 int 同名，但这里认为数组名与 int 名不能重复</li>
+</ul>
+<p>还有<strong>常量折叠</strong>相关的：这个总的来说就是 <code>a[]</code> 形式不能用在常量表达式中</p>
+<ul>
+<li><strong>数组解引用</strong>和变量同地位，值不会被记录到符号表中，不能给常量赋值…</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">10</span>];</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> b = a[<span class="number">1</span>];</span><br></pre></td></tr></table></figure>
+<ul>
+<li>…不能做数组大小…</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">10</span>];</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> b[a[<span class="number">1</span>]];</span><br></pre></td></tr></table></figure>
+<ul>
+<li>…也不能给全局变量赋值。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">10</span>] = &#123;...&#125;;</span><br><span class="line"><span class="type">int</span> b = a[<span class="number">1</span>];</span><br></pre></td></tr></table></figure>
+<p>思考时需要凭感觉去发散想到尽可能多的情况，实现时却要回到逻辑上去尝试整理好所有混乱的思考。这之间的反复切换让我头疼，但为了一个逻辑严密的编译器以及满足我的强迫欲望，多消耗些脑细胞也值得。</p>
+<p>仔细想想，从实现的角度看，只需要在以下节点做检查：</p>
+<ol>
+<li>定义节点，如 <code>ConstDefAST_1</code>、<code>VarDef</code>
+<ul>
+<li>检查 <code>IDENT</code> 是否<strong>重复定义</strong>了</li>
+<li>对于带初始化的，检查初始化节点类型是否与定义节点类型匹配，比如 <code>ConstDefAST_1</code> 不能配一个给数组初始化的 <code>ConstInitValAST_2</code>，这在前面类型检查里也提到过</li>
+</ul>
+</li>
+<li>LVal 节点
+<ul>
+<li>该节点存的是 <code>a</code>、<code>a[]</code> 这种最基本的常量/变量，是表达式的最基本成员，也是赋值语句最左侧成员</li>
+<li>先前我想到的情况中，剩下的所有情况，<strong>都可以</strong>到这个节点完成检测。</li>
+</ul>
+</li>
+<li>其他节点仅负责设定 LVal 的模式，之前已经在用 <code>error_mode</code> 和 <code>VAR_UNDF</code>、<code>CONST_UNDF</code>、<code>UNDF</code> 做这一点了，但是现在类型由两种增加到四种，需要重构一下。</li>
+</ol>
+<h4 id="测试">测试</h4>
+<p>折叠测试，正确</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> b[<span class="number">2</span>] = &#123;<span class="number">2</span>+<span class="number">3</span>, a*<span class="number">2</span>&#125;; <span class="comment">// 折叠成单个数字 &#123;5, 20&#125;</span></span><br><span class="line"><span class="type">int</span> c[<span class="number">1</span>] = &#123;a+<span class="number">2</span>&#125;; <span class="comment">// 折叠成单个数字 &#123;12&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> d[<span class="number">1</span>] = &#123;a*<span class="number">3</span>&#125;; <span class="comment">// 折叠成单个数字 &#123;30&#125;</span></span><br><span class="line">    <span class="type">int</span> b[<span class="number">2</span>] = &#123;<span class="number">2</span>+<span class="number">3</span>, a+<span class="number">3</span>&#125;; <span class="comment">// 只折叠 a ，其他保留 &#123;2+3, 10+3&#125;</span></span><br><span class="line">    <span class="keyword">return</span> d[<span class="number">0</span>] + b[<span class="number">1</span>]; <span class="comment">// 不做折叠</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>报错测试：</p>
+<ol>
+<li><code>int</code> 用 <code>&#123;&#125;</code> <strong>初始化</strong>，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: var &#x27;a&#x27; cannot be initialized as a var array.</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><code>const int</code> 用 <code>&#123;&#125;</code> <strong>初始化</strong>，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: const &#x27;a&#x27; cannot be initialized as a const array.</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li><code>int[]</code> 用表达式<strong>初始化</strong>，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>] = <span class="number">10</span>*<span class="number">2</span>+<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: var array &#x27;a&#x27; cannot be initialized as a var.</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li><code>const int[]</code> 用表达式<strong>初始化</strong>，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a[<span class="number">3</span>] = <span class="number">10</span>*<span class="number">2</span>+<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: const array &#x27;a&#x27; cannot be initialized as a const.</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>数组名<strong>重复定义</strong>，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> a[<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: &#x27;a&#x27; redefined.</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li><strong><code>int a[]</code></strong> 为 <code>global int</code> 初始化，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">int</span> b = a[<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: array &#x27;a&#x27; cannot be used to assign for const or global var.</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li><strong><code>int a[]</code></strong> 为 <code>const int</code> 初始化，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> b = a[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: array &#x27;a&#x27; cannot be used to assign for const or global var.</span><br></pre></td></tr></table></figure>
+<ol start="8">
+<li><strong><code>int a[]</code></strong> 做数组大小，报错。呃，好像说得差了点东西，先这样吧</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> b[a[<span class="number">2</span>]];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: array &#x27;a&#x27; cannot be used to assign for const or global var.</span><br></pre></td></tr></table></figure>
+<ol start="9">
+<li><code>int[]</code> 为 <code>int</code> 赋值，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">    <span class="type">int</span> b;</span><br><span class="line">    b = a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: var array &#x27;a&#x27; cannot be used as a whole here.</span><br></pre></td></tr></table></figure>
+<ol start="10">
+<li><code>int[]</code> 作为返回值，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: var array &#x27;a&#x27; cannot be used as a whole here.</span><br></pre></td></tr></table></figure>
+<ol start="11">
+<li>为 <code>int</code> 强加索引，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: &#x27;a&#x27; is a var rather than an array.</span><br></pre></td></tr></table></figure>
+<ol start="12">
+<li>为 <code>const int a[]</code> 赋值，报错</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> a[<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">    a[<span class="number">0</span>] = <span class="number">4</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: const array &#x27;a&#x27; cannot be assigned again.</span><br></pre></td></tr></table></figure>
+<h3 id="IR-生成">IR 生成</h3>
+<p>需要增加<strong>数组的声明</strong>、<strong>数组的初始化</strong>以及<strong>数组成员的存取</strong>，一维数组还是很好做的。</p>
+<h4 id="数组声明">数组声明</h4>
+<p>可分为<strong>全局</strong>和<strong>局部</strong>，至于是常量还是变量已经不用关注了，因为该做的检查已经在语义分析做过了。</p>
+<ol>
+<li>全局格式如下，新增 <code>GlobalIR_2</code> 来存放</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">global @x = alloc [i32, 2], &#123;10, 20&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>局部格式如下，虽然也是 alloc ，但多了大小，于是新增 <code>ValueIR_8</code></li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@arr = alloc [i32, 5]</span><br></pre></td></tr></table></figure>
+<p>局部数组声明指令在遇到定义节点时就可以加入；全局由于涉及初始化，需要在后面节点完成，而且随着一维变多维可能需要多个节点互相配合完成。</p>
+<h4 id="数组初始化">数组初始化</h4>
+<p>分为<strong>全局</strong>、<strong>局部常量</strong>和<strong>局部变量</strong>。总的说是先拿 <code>&#123;&#125;</code> 里的赋值，不够再赋为 <code>0</code>。</p>
+<ol>
+<li><strong>全局</strong></li>
+</ol>
+<p>一维数组在节点 <code>ConstInitValAST_2</code>、<code>ConstExpListAST</code>、<code>VarDefAST_3</code>、<code>InitValAST_2</code>、<code>ExpListAST</code> 中的一个就能完成</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> arr[<span class="number">3</span>] = &#123;<span class="number">5</span>&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">global @arr = alloc [i32, 3], &#123;5, 0, 0&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><strong>局部常量</strong></li>
+</ol>
+<p>这里赋初值的方式就是不断向数组里存，新增了 <code>getelemptr</code> 指令，会返会指向数组某个成员的指针，如 <code>%1 = getelemptr @arr, 1</code> 返回的是指向 <code>arr[1]</code> 的指针，然后再向里面 <code>store</code>。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%1 = getelemptr @arr, 1</span><br><span class="line">store 2, %1</span><br></pre></td></tr></table></figure>
+<p>由于是常量，可以直接获取到数值作为 <code>store</code> 的第一个参数。</p>
+<ol start="3">
+<li><strong>局部变量</strong></li>
+</ol>
+<p>与局部常量基本一样，唯一区别是初始值在语义分析中保留了表达式的形式，需要简单算一下。</p>
+<h4 id="数组成员存取">数组成员存取</h4>
+<p>前面提到 <code>getelemptr</code> + <code>store</code> 是存，那 <code>getelemptr</code> + <code>load</code> 就是取了。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%1 = getelemptr @arr, 1</span><br><span class="line">%2 = load %1</span><br></pre></td></tr></table></figure>
+<h4 id="阶段性成果">阶段性成果</h4>
+<p>示例程序的 IR：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">global @x_1 = alloc [i32, 2], &#123;10, 20&#125;</span><br><span class="line"></span><br><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  @sce_result = alloc i32   # 短路求值历史遗留问题</span><br><span class="line">  @arr_1 = alloc [i32, 5]</span><br><span class="line">  %0 = getelemptr @arr_1, 0</span><br><span class="line">  store 1, %0</span><br><span class="line">  %1 = getelemptr @arr_1, 1</span><br><span class="line">  store 2, %1</span><br><span class="line">  %2 = getelemptr @arr_1, 2</span><br><span class="line">  store 3, %2</span><br><span class="line">  %3 = getelemptr @arr_1, 3</span><br><span class="line">  store 0, %3</span><br><span class="line">  %4 = getelemptr @arr_1, 4</span><br><span class="line">  store 0, %4</span><br><span class="line">  %5 = getelemptr @arr_1, 2</span><br><span class="line">  %6 = load %5</span><br><span class="line">  ret %6</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RISC-V-生成">RISC-V 生成</h3>
+<p>不管数组是多少维，在内存中都需要线性存储，而通过数组索引计算目标元素在线性内存中的位置，是个难点。</p>
+<h4 id="处理全局初始化">处理全局初始化</h4>
+<p>很简单，直接输出，比如 <code>global @x_1 = alloc [i32, 2], &#123;10, 20&#125;</code>，就是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.data</span><br><span class="line">  .globl x_1</span><br><span class="line">x_1:</span><br><span class="line">  .word 10</span><br><span class="line">  .word 20</span><br></pre></td></tr></table></figure>
+<h4 id="处理-getelemptr">处理 getelemptr</h4>
+<p>首先要修改 <code>stack_setup</code> ，计算为数组分配的空间。</p>
+<p>而遇到 <code>%1 = getelemptr @arr, 1</code>：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 计算 getelemptr 偏移量</span><br><span class="line">  li    t0, 1 # 下标</span><br><span class="line">  li    t1, 4 # 一个 int 的大小</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line"># 得到 @arr 的地址</span><br><span class="line">  addi  t2, sp, &lt;num&gt;</span><br><span class="line"># 计算 getelemptr 的结果指针</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line"># 存入栈帧</span><br><span class="line">  ...</span><br></pre></td></tr></table></figure>
+<h4 id="关于-store-和-load">关于 store 和 load</h4>
+<p>Koopa IR 中，当用比如 <code>%1 = getelemptr ...</code> 获取到指向某个数组元素的指针后，会跟着存储指令 <code>store 1, %1</code> 或者加载指令 <code>%2 = load %1</code>，指令中的临时符号 <code>%1</code> 应该被解释成指针值。</p>
+<p>我之前犯了一个错误…</p>
+<ul>
+<li><code>store 1, %1</code> -&gt; <code>li t0, 1; sw t0, ..(sp)</code></li>
+<li><code>%2 = load %1</code> -&gt; <code>lw t0, ..(sp); sw t0, ..(sp)</code></li>
+</ul>
+<p>…我把 <code>%1</code> 单纯当成了一个目标，但实际上它存的内容才是目标所在的地址，所以正确的转换是：</p>
+<ul>
+<li><code>store 1, %1</code> -&gt; <code>li t0, 1; lw t1, ..(sp); sw t0, 0(t1)</code></li>
+<li><code>%2 = load %1</code> -&gt; <code>lw t0, ..(sp); lw t0, 0(t0); sw t0, ..(sp)</code></li>
+</ul>
+<p>看了一下，<code>store</code> 和 <code>load</code> 的这个位置只有两种情况，一种是 <code>%1</code> 临时变量存着指针值，另一种是 <code>@</code> 存着变量，所以识别到 <code>%</code> 就用上面的格式替换，这是没问题哒。</p>
+<h4 id="阶段性成果-2">阶段性成果</h4>
+<p>示例程序，应该是对的吧 (`・ω・´)…呃、不太对…好的现在对了</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">  .data</span><br><span class="line">  .globl x_1</span><br><span class="line">x_1:</span><br><span class="line">  .word 10</span><br><span class="line">  .word 20</span><br><span class="line"></span><br><span class="line">  .text</span><br><span class="line">  .globl main</span><br><span class="line">main:</span><br><span class="line">  addi  sp, sp, -64</span><br><span class="line">  li    t0, 0</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  addi  t2, sp, 4</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 24(sp)</span><br><span class="line">  li    t0, 1</span><br><span class="line">  lw    t1, 24(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  li    t0, 1</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  addi  t2, sp, 4</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 28(sp)</span><br><span class="line">  li    t0, 2</span><br><span class="line">  lw    t1, 28(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  li    t0, 2</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  addi  t2, sp, 4</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 32(sp)</span><br><span class="line">  li    t0, 3</span><br><span class="line">  lw    t1, 32(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  li    t0, 3</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  addi  t2, sp, 4</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 36(sp)</span><br><span class="line">  li    t0, 0</span><br><span class="line">  lw    t1, 36(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  li    t0, 4</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  addi  t2, sp, 4</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 40(sp)</span><br><span class="line">  li    t0, 0</span><br><span class="line">  lw    t1, 40(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  li    t0, 2</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  addi  t2, sp, 4</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 44(sp)</span><br><span class="line">  lw    t0, 44(sp)</span><br><span class="line">  lw    t0, 0(t0)</span><br><span class="line">  sw    t0, 48(sp)</span><br><span class="line">  lw    a0, 48(sp)</span><br><span class="line">  addi  sp, sp, 64</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+<p>(等等，我好像看到了一条波浪)</p>
+<h2 id="多维数组">多维数组</h2>
+<p>示例程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">2</span>][<span class="number">3</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> arr[<span class="number">0</span>][<span class="number">2</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="词法-语法分析-2">词法/语法分析</h3>
+<p>词法无改动，语法增改如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ConstDef      ::= IDENT &#123;&quot;[&quot; ConstExp &quot;]&quot;&#125; &quot;=&quot; ConstInitVal;</span><br><span class="line">ConstInitVal  ::= ConstExp | &quot;&#123;&quot; [ConstInitVal &#123;&quot;,&quot; ConstInitVal&#125;] &quot;&#125;&quot;;</span><br><span class="line">VarDef        ::= IDENT &#123;&quot;[&quot; ConstExp &quot;]&quot;&#125;</span><br><span class="line">                | IDENT &#123;&quot;[&quot; ConstExp &quot;]&quot;&#125; &quot;=&quot; InitVal;</span><br><span class="line">InitVal       ::= Exp | &quot;&#123;&quot; [InitVal &#123;&quot;,&quot; InitVal&#125;] &quot;&#125;&quot;;</span><br><span class="line"></span><br><span class="line">LVal          ::= IDENT &#123;&quot;[&quot; Exp &quot;]&quot;&#125;;</span><br></pre></td></tr></table></figure>
+<p>修改成与 bison 和之前规则相适配的写法，去掉了 <code>ConstExpList</code>，修改了 <code>ExpList</code> 的含义。发现出现了两个非终结符互相展开的情况，以前没见过呢。</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ConstDef ::= IDENT &quot;=&quot; ConstInitVal | IDENT ConstSizeList &quot;=&quot; ConstInitVal;</span><br><span class="line">ConstSizeList ::= &quot;[&quot; ConstExp &quot;]&quot; | ConstSizeList &quot;[&quot; ConstExp &quot;]&quot;;</span><br><span class="line">ConstInitVal ::= ConstExp | &quot;&#123;&quot; [ConstInitValList] &quot;&#125;&quot;;</span><br><span class="line">ConstInitValList ::= ConstInitVal | ConstInitValList &quot;,&quot; ConstInitVal;</span><br><span class="line"></span><br><span class="line">VarDef ::= IDENT </span><br><span class="line">         | IDENT &quot;=&quot; InitVal</span><br><span class="line">         | IDENT VarSizeList</span><br><span class="line">         | IDENT VarSizeList &quot;=&quot; InitVal;</span><br><span class="line">VarSizeList ::= &quot;[&quot; ConstExp &quot;]&quot; | VarSizeList &quot;[&quot; ConstExp &quot;]&quot;;</span><br><span class="line">InitVal ::= Exp | &quot;&#123;&quot; [InitValList] &quot;&#125;&quot;;</span><br><span class="line">InitValList ::= InitVal | InitValList &quot;,&quot; InitVal;</span><br><span class="line"></span><br><span class="line">LVal ::= IDENT | IDENT ExpList;</span><br><span class="line">ExpList ::= &quot;[&quot; Exp &quot;]&quot; | ExpList &quot;[&quot; Exp &quot;]&quot;;</span><br></pre></td></tr></table></figure>
+<h3 id="语义分析-2">语义分析</h3>
+<h4 id="处理初始化列表">处理初始化列表</h4>
+<p>初始化列表不一定是工整的，可能会很混乱：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> arr[<span class="number">2</span>][<span class="number">3</span>][<span class="number">4</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, &#123;<span class="number">5</span>&#125;, &#123;<span class="number">6</span>&#125;, &#123;<span class="number">7</span>, <span class="number">8</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+<p>对此，手册给了一套规则，可以将初始化列表的内容对应到数组的各个元素，同时在一些地方补上 0 ，然后可以得到：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> arr[<span class="number">2</span>][<span class="number">3</span>][<span class="number">4</span>] = &#123;</span><br><span class="line">    &#123;&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;, &#123;<span class="number">5</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;, &#123;<span class="number">6</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;&#125;,</span><br><span class="line">    &#123;&#123;<span class="number">7</span>, <span class="number">8</span>, <span class="number">0</span>, <span class="number">0</span>&#125;, &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;, &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>&#125;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>现在有两种选择：</p>
+<ul>
+<li>在语义分析阶段修改 AST ，把初始化列表改成理想的格式</li>
+<li>语义分析只检查书写错误的初始化列表，IR 生成时再按规则来一次</li>
+</ul>
+<p>回看之前的语义分析，除了检测错误，也做了不少为 IR 生成提供方便的事情，所以，即使会很麻烦，我还是<strong>选择前者</strong>，让 IR 生成更方便。</p>
+<p>那么，这应该是目前为止最复杂的 AST 修改咯，我愿称之为<strong>初始化列表标准化</strong>。</p>
+<p>思考一下，大概有以下内容：</p>
+<ol>
+<li>初始化列表标准化的过程需要用到数组的维度信息，但这并不便集成到符号表中，所以要用新的状态变量来传递数组各个维度的大小</li>
+<li>以常量数组的初始化为例，数组的 <code>ConstInitVal</code> 在最后应该被整体替换，所以在遍历的时候就要维护一个小 AST</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConstDef ::=  IDENT ConstSizeList &quot;=&quot; ConstInitVal;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>规则相关的——遇到数字时加入，遇到 <code>&#123; &#125;</code> 时判断是否对齐以及对齐到了哪个边界，<code>&#123; &#125;</code> 结束时要知道如何补齐到对应边界</li>
+</ol>
+<p>这些操作可以放到单独的一个类中，常量和变量不一样，所以设计两个类。</p>
+<p>类需要有以下接口：</p>
+<ol>
+<li>加入数组维度大小，比如 <code>a[2][3]</code>，就先加入 2 再加入 3</li>
+<li>加入新的整数/AST，会返回 <code>true</code>/<code>false</code> 表示数字是被加入还是丢弃了；类内会随着整数的加入逐渐构造出 AST</li>
+<li>告知遇到了 <code>&#123; &#125;</code>，需要得到返回 <code>true</code>/<code>false</code> 表示是否符合语义</li>
+<li>告知 <code>&#123; &#125;</code> 结束，此时会自动补 0</li>
+<li>要求返回新建的 AST</li>
+</ol>
+<p>于是我用了一个栈的数组，里面提前放好一系列 <code>ConstInitValList*</code> ，当下层的 List 放满后，为它拼上 <code>ConstInitVal</code>，放入上层的 List，直到最上层的 List 放满，拼上 <code>ConstInitVal</code> 作为要返回的新 AST。<br>
+<img src="/img/战编译/Lab9_init_list.jpg" width=350px></p>
+<p>功能是正确的，设计也很好理解，但是代码、性能、内存等好像都很糟糕，以后需要重构。</p>
+<h4 id="报错检测-2">报错检测</h4>
+<p>现在还没出现数组传参的情况，所以 LVal 使用数组内容时要求必须把索引给全。</p>
+<p>比如下面会报错。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">1</span>][<span class="number">2</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: array &#x27;a&#x27; index doesn&#x27;t match its dimension.</span><br></pre></td></tr></table></figure>
+<p>以及当初始化的 <code>&#123; &#125;</code> 格式不当 (嵌套层数过多或者未对齐) 时，也会报错。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> arr[<span class="number">2</span>][<span class="number">3</span>] = &#123;&#123;&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;,&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;&#125;&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: var array &#x27;arr&#x27; has the wrong initialization list.</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> arr[<span class="number">2</span>][<span class="number">3</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,&#123;<span class="number">5</span>,<span class="number">6</span>&#125;&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: const array &#x27;arr&#x27; has the wrong initialization list.</span><br></pre></td></tr></table></figure>
+<h3 id="IR-生成-2">IR 生成</h3>
+<p>大致有三部分：</p>
+<ol>
+<li>全局数组如何构造 global</li>
+<li>初始化的时候如何遍历数组然后 store</li>
+<li>取数组某个地方来使用或赋值时要如何 load 或 store</li>
+</ol>
+<p>闷头写完以后已经没有耐心写总结了，摆烂了。</p>
+<p>对于 <code>a[i][j][k]</code> 这种，想获得对应的指针很简单：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%0 = getelemptr @a, i</span><br><span class="line">%1 = getelemptr %0, j</span><br><span class="line">%2 = getelemptr %1, k</span><br></pre></td></tr></table></figure>
+<p>阶段性成果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">fun @main(): i32 &#123;</span><br><span class="line">%entry:</span><br><span class="line">  @sce_result = alloc i32</span><br><span class="line">  @arr_1 = alloc [[i32, 3], 2]</span><br><span class="line">  %0 = getelemptr @arr_1, 0</span><br><span class="line">  %1 = getelemptr %0, 0</span><br><span class="line">  store 1, %1</span><br><span class="line">  %2 = getelemptr %0, 1</span><br><span class="line">  store 2, %2</span><br><span class="line">  %3 = getelemptr %0, 2</span><br><span class="line">  store 0, %3</span><br><span class="line">  %4 = getelemptr @arr_1, 1</span><br><span class="line">  %5 = getelemptr %4, 0</span><br><span class="line">  store 0, %5</span><br><span class="line">  %6 = getelemptr %4, 1</span><br><span class="line">  store 0, %6</span><br><span class="line">  %7 = getelemptr %4, 2</span><br><span class="line">  store 0, %7</span><br><span class="line">  %8 = getelemptr @arr_1, 0</span><br><span class="line">  %9 = getelemptr %8, 2</span><br><span class="line">  %10 = load %9</span><br><span class="line">  ret %10</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="RISC-V-生成-2">RISC-V 生成</h3>
+<h4 id="基本内容">基本内容</h4>
+<p>要做的事情有：</p>
+<ol>
+<li>输出 <code>global</code>，如：</li>
+</ol>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">global @a_1 = alloc [[i32, 2], 2], &#123;&#123;1, 2&#125;, &#123;3, 4&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>可以得到：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">  .data</span><br><span class="line">  .globl a_1</span><br><span class="line">a_1:</span><br><span class="line">  .word 1</span><br><span class="line">  .word 2</span><br><span class="line">  .word 3</span><br><span class="line">  .word 4</span><br></pre></td></tr></table></figure>
+<p>这很好弄。</p>
+<ol start="2">
+<li>
+<p><code>getelemptr</code> 这次需要结合后面符号的类型来转换成 RISC-V ，也需要记录得到的新符号的类型…</p>
+<p>把这些东西都放到一个新类中：</p>
+<ul>
+<li>记录每个数组的名称和大小——遇到 global 数组和 alloc 数组时要调用</li>
+<li>记录每个数组相关的符号对应哪个数组的哪个维度</li>
+<li>对于某个符号，返回其偏移单位量</li>
+<li>加入某个符号，根据对应的高一级符号——记录它对应哪个数组的哪个维度</li>
+</ul>
+</li>
+</ol>
+<p>IR 生成中提到，对于比如 <code>a[i][j][k]</code> ，想获得对应的指针很简单：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%0 = getelemptr @a, i</span><br><span class="line">%1 = getelemptr %0, j</span><br><span class="line">%2 = getelemptr %1, k</span><br></pre></td></tr></table></figure>
+<p>但是到自己写 RISC-V 时，就不能只靠 ijk 了，因为 <code>getelemptr</code> 获取偏移时除了 ijk 还会看 <code>@a</code>、<code>%0</code>、<code>%1</code> 的类型，例如对于 <code>a[2][3][4]</code>，它的类型可以写成：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[[i32, 4], 3], 2]</span><br></pre></td></tr></table></figure>
+<p>那这些符号的类型，以及 <code>getelemptr</code> 所做的偏移量：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">符号</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left"><code>getelemptr</code> 偏移单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>@a</code></td>
+<td style="text-align:left"><code>[[i32, 4], 3]</code> 指针</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>4</mn><mo>×</mo><mn>3</mn><mo>=</mo><mn>48</mn></mrow><annotation encoding="application/x-tex">4\times 4 \times 3 = 48</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">48</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>%0</code></td>
+<td style="text-align:left"><code>[i32, 4]</code> 指针</td>
+<td style="text-align:left"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>4</mn><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">4\times 4 = 16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>%1</code></td>
+<td style="text-align:left"><code>i32</code> 指针</td>
+<td style="text-align:left">4</td>
+</tr>
+</tbody>
+</table>
+<p>写成 RISC-V 就应该是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">li    t0, i           # 下标</span><br><span class="line">li    t1, 48          # 一个 [[i32, 4], 3] 的大小</span><br><span class="line">mul   t1, t0, t1</span><br><span class="line">addi  t2, sp, &lt;num0&gt;  # 得到 @a 的地址</span><br><span class="line">add   t2, t1, t2      # 得到 %0</span><br><span class="line">sw    t2, &lt;num1&gt;(sp)  # 存入 %0</span><br><span class="line"></span><br><span class="line">li    t0, j           # 下标</span><br><span class="line">li    t1, 16          # 一个 [i32, 4] 的大小</span><br><span class="line">mul   t1, t0, t1</span><br><span class="line">lw    t2, &lt;num1&gt;(sp)  # 加载 %0</span><br><span class="line">add   t2, t1, t2      # 得到 %1</span><br><span class="line">sw    t2, &lt;num2&gt;(sp)  # 存入 %1</span><br><span class="line"></span><br><span class="line">li    t0, k           # 下标</span><br><span class="line">li    t1, 4           # 一个 i32 的大小</span><br><span class="line">mul   t1, t0, t1</span><br><span class="line">lw    t2, &lt;num2&gt;(sp)  # 加载 %1</span><br><span class="line">add   t2, t1, t2      # 得到 %2</span><br><span class="line">sw    t2, &lt;num3&gt;(sp)  # 存入 %2</span><br></pre></td></tr></table></figure>
+<p>示例程序会得到如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line">  .text</span><br><span class="line">  .globl main</span><br><span class="line">main:</span><br><span class="line">  addi  sp, sp, -80</span><br><span class="line">  li    t0, 0</span><br><span class="line">  li    t1, 12</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  addi  t2, sp, 4</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 28(sp)</span><br><span class="line"></span><br><span class="line">  li    t0, 0</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  lw    t2, 28(sp)</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 32(sp)</span><br><span class="line">  </span><br><span class="line">  li    t0, 1</span><br><span class="line">  lw    t1, 32(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  </span><br><span class="line">  li    t0, 1</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  lw    t2, 28(sp)</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 36(sp)</span><br><span class="line">  </span><br><span class="line">  li    t0, 2</span><br><span class="line">  lw    t1, 36(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  </span><br><span class="line">  li    t0, 2</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  lw    t2, 28(sp)</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 40(sp)</span><br><span class="line">  </span><br><span class="line">  li    t0, 0</span><br><span class="line">  lw    t1, 40(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  </span><br><span class="line">  li    t0, 1</span><br><span class="line">  li    t1, 12</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  addi  t2, sp, 4</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 44(sp)</span><br><span class="line">  </span><br><span class="line">  li    t0, 0</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  lw    t2, 44(sp)</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 48(sp)</span><br><span class="line"></span><br><span class="line">  li    t0, 0</span><br><span class="line">  lw    t1, 48(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line"></span><br><span class="line">  li    t0, 1</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  lw    t2, 44(sp)</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 52(sp)</span><br><span class="line">  </span><br><span class="line">  li    t0, 0</span><br><span class="line">  lw    t1, 52(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  </span><br><span class="line">  li    t0, 2</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  lw    t2, 44(sp)</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 56(sp)</span><br><span class="line">  </span><br><span class="line">  li    t0, 0</span><br><span class="line">  lw    t1, 56(sp)</span><br><span class="line">  sw    t0, 0(t1)</span><br><span class="line">  </span><br><span class="line">  li    t0, 0</span><br><span class="line">  li    t1, 12</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  addi  t2, sp, 4</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 60(sp)</span><br><span class="line">  </span><br><span class="line">  li    t0, 2</span><br><span class="line">  li    t1, 4</span><br><span class="line">  mul   t1, t0, t1</span><br><span class="line">  lw    t2, 60(sp)</span><br><span class="line">  add   t2, t1, t2</span><br><span class="line">  sw    t2, 64(sp)</span><br><span class="line">  </span><br><span class="line">  lw    t0, 64(sp)</span><br><span class="line">  lw    t0, 0(t0)</span><br><span class="line">  sw    t0, 68(sp)</span><br><span class="line">  </span><br><span class="line">  lw    a0, 68(sp)</span><br><span class="line">  addi  sp, sp, 80</span><br><span class="line">  ret</span><br></pre></td></tr></table></figure>
+<h4 id="Debug">Debug</h4>
+<p>测试时对于大数组的情况，会出现栈帧过长，无法使用 <code>addi .., sp, &lt;num&gt;</code>、<code>lw t0, &lt;num&gt;(sp)</code> 、 <code>sw t0, &lt;num&gt;(sp)</code> 。因为这里要求 <code>&lt;num&gt;</code> 在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mo>−</mo><mn>2048</mn><mo separator="true">,</mo><mn>2047</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[-2048, 2047]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">−</span><span class="mord">2048</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2047</span><span class="mclose">]</span></span></span></span> 内，所以当超出这个范围时，需要对简单的指令做改写：</p>
+<ul>
+<li>
+<p><code>addi .., sp, &lt;num&gt;</code></p>
+<p>-&gt; <code>li t0, &lt;num&gt;</code>; <code>add .., t0, sp</code></p>
+</li>
+<li>
+<p><code>lw t0, &lt;num&gt;(sp)</code></p>
+<p>-&gt; <code>li t0, &lt;num&gt;</code>; <code>add t0, t0, sp</code>; <code>lw t0, 0(t0)</code></p>
+</li>
+<li>
+<p><code>sw t0, &lt;num&gt;(sp)</code></p>
+<p>-&gt; <code>li t1, &lt;num&gt;</code>; <code>add t1, t1, sp</code>; <code>sw t0, 0(t1)</code></p>
+</li>
+</ul>
+<p><code>addi</code> 出现的地方不多——只有 4 处，所以直接改就行。但 <code>lw</code> 和 <code>sw</code> 出现的地方非常多——几十处，我不可能一个一个去添加，所以弄两个函数封装一下，然后在原本直接使用 <code>lw</code>、<code>sw</code> 的地方调用它们。</p>
+<p>在前面的改写中，<code>lw</code> 不需要使用额外的寄存器，而 <code>sw</code> 要另用一个寄存器，所以将两个函数设计如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">riscv_lw</span><span class="params">(std::string target_register, <span class="type">int</span> offset)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">riscv_sw</span><span class="params">(std::string target_register, <span class="type">int</span> offset, std::string tool_register)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>PS：<strong>把每个指令各自封装成函数</strong>可能是想把编译器写得更大的好方法，不过我也不想写太大了，封装几个重要的指令就 ok 了。</p>
+<h2 id="数组参数">数组参数</h2>
+<p>呜哇终于要结束了吗 (&gt;﹏&lt;)</p>
+<p>示例程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">f</span><span class="params">(<span class="type">int</span> arr[])</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> arr[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> arr[<span class="number">2</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> f(arr);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="词法-语法分析-3">词法/语法分析</h3>
+<p>数组做函数参数，只有最高维是空的 <code>[ ]</code>，低维的都需要传入大小信息，如 <code>a[][3][4]</code></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FuncFParam ::= BType IDENT [&quot;[&quot; &quot;]&quot; &#123;&quot;[&quot; ConstExp &quot;]&quot;&#125;];</span><br></pre></td></tr></table></figure>
+<p>改写一下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FuncFParam ::= BType IDENT | BType IDENT &quot;[&quot; &quot;]&quot; [ConstExpList];</span><br><span class="line">ConstExpList ::= &quot;[&quot; ConstExp &quot;]&quot; | ConstExpList &quot;[&quot; ConstExp &quot;]&quot;;</span><br></pre></td></tr></table></figure>
+<h3 id="语义分析-3">语义分析</h3>
+<h4 id="代码">代码</h4>
+<p>对于数组有两点：</p>
+<ol>
+<li>数组做函数参数时，<code>a[][ConstExp][ConstExp]</code> 低维度的常量要算出来并折叠。</li>
+<li>数组可以部分解引用，就是说 <code>int arr[2][3][4]</code> ，那 <code>arr</code>、<code>arr[0]</code>、<code>arr[0][1]</code> 都可以做变量，但只能<strong>作为函数参数传入</strong>，要做的有：
+<ul>
+<li>
+<p>检查传入维度与数组定义中的维度是否匹配，比如对于 <code>int arr[2][3][4]</code>：</p>
+<ul>
+<li><code>sum(arr)</code>，函数定义就要是 <code>sum(int arr[][3][4])</code></li>
+<li><code>sum(arr[0])</code>，定义就要是 <code>sum(int arr[][4])</code></li>
+<li><code>sum(arr[0][1])</code>，定义就要是 <code>sum(int arr[])</code></li>
+</ul>
+<p>传入维度 + 定义维度 = 数组总维度，否则<strong>报错</strong></p>
+</li>
+</ul>
+</li>
+</ol>
+<p>对于函数传参：</p>
+<ol>
+<li>为数组时，要检查维度是否匹配</li>
+<li>还可能嵌套函数，用返回值作为参数，由于函数返回值不是 <code>int</code> 就是 <code>void</code>，所以：
+<ul>
+<li>检查被调用的函数返回值是不是 <code>int</code></li>
+<li>检查函数参数是否是 0 维</li>
+</ul>
+</li>
+<li>为常/变量时，检查函数参数是否是 0 维</li>
+</ol>
+<p>另外：</p>
+<p><code>error_mode</code> 新增了一个模式 <code>PARAM_UNDF</code>，这时函数嵌套调用时 (比如下面) 会出现 error_mode 在中间被改掉的情况，所以改用栈 <code>error_mode_stk</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Add(<span class="number">1</span>, arr[brr[<span class="number">1</span>]][<span class="number">1</span>], Mul(<span class="number">1</span>, arr[<span class="number">1</span>][<span class="number">1</span>]), arr[<span class="number">1</span>][<span class="number">2</span>]);</span><br></pre></td></tr></table></figure>
+<h4 id="测试-2">测试</h4>
+<ol>
+<li>测试数组做函数参数时的常量折叠，工作正常</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">test</span><span class="params">(<span class="type">int</span> arr[][a+<span class="number">3</span>][a*<span class="number">2</span>], <span class="type">int</span> b)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>古怪的嵌套，工作正常</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">2</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line"><span class="type">int</span> b[<span class="number">2</span>][<span class="number">2</span>] = &#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>&#125;;</span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a[], <span class="type">int</span> b[])</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">0</span>]+b[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> add(a[add(a[<span class="number">0</span>],a[<span class="number">1</span>])], b[<span class="number">1</span>+add(b[<span class="number">0</span>],b[<span class="number">1</span>])+<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>参数个数少了</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a[], <span class="type">int</span> b[])</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">0</span>]+b[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">2</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> add(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: function &#x27;add&#x27; parameter not match when called.</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>参数个数多了</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a[], <span class="type">int</span> b[])</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">0</span>]+b[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> a[<span class="number">2</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> add(a, a, a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: function &#x27;add&#x27; parameter not match when called.</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>参数维度小了，且传入数字</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a[], <span class="type">int</span> b[])</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">0</span>]+b[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> add(<span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: number &#x27;1&#x27; doesn&#x27;t match the dimension of parameter required by the function &#x27;add&#x27;.</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>参数维度小了，传入数组</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">2</span>][<span class="number">2</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>&#125;;</span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a[][<span class="number">2</span>], <span class="type">int</span> b[][<span class="number">2</span>])</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">0</span>][<span class="number">0</span>]+b[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> add(a[<span class="number">0</span>][<span class="number">0</span>], a[<span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: array &#x27;a&#x27; doesn&#x27;t match the dimension of parameter required by the function &#x27;add&#x27;.</span><br></pre></td></tr></table></figure>
+<ol start="7">
+<li>参数维度大了，传入数组</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">2</span>][<span class="number">2</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>&#125;;</span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a[][<span class="number">2</span>], <span class="type">int</span> b[][<span class="number">2</span>])</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">0</span>][<span class="number">0</span>]+b[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> add(a, a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: var array &#x27;a&#x27; doesn&#x27;t match the dimension of parameter required by the function &#x27;add&#x27;.</span><br></pre></td></tr></table></figure>
+<ol start="8">
+<li>参数维度大了，原本是数字，传了数组</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">2</span>][<span class="number">2</span>][<span class="number">2</span>] = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>&#125;;</span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> add(a[<span class="number">0</span>][<span class="number">0</span>], a[<span class="number">1</span>][<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: array &#x27;a&#x27; doesn&#x27;t match the dimension of parameter required by the function &#x27;add&#x27;.</span><br></pre></td></tr></table></figure>
+<ol start="9">
+<li>函数嵌套，用 void 函数做参数</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> add(<span class="number">1</span>+test(), <span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: function &#x27;test&#x27; should return int as parameter.</span><br></pre></td></tr></table></figure>
+<ol start="10">
+<li>函数嵌套，用 int 函数做数组参数</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">test</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> a[], <span class="type">int</span> b[])</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> a[<span class="number">0</span>]+b[<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">int</span> c[<span class="number">2</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> add(test(), c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Semantic analysis failed: function &#x27;test&#x27; doesn&#x27;t match the dimension of parameter required by the function &#x27;add&#x27;.</span><br></pre></td></tr></table></figure>
+<h3 id="IR-生成-3">IR 生成</h3>
+<p>这几处 IR 的写法要注意：函数参数定义、数组参数使用、函数参数传入。</p>
+<h4 id="数组作函数参数">数组作函数参数</h4>
+<p>这里并不是把整个数组复制一遍传入的，而是传入数组的地址 (也就是指针变量)。</p>
+<p>比如 <code>a[]</code> 传入的是指向一堆 <code>int</code> 的指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">f</span><span class="params">(<span class="type">int</span> a[])</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun @f(%a_1: *i32) : i32</span><br></pre></td></tr></table></figure>
+<p>而 <code>a[][3]</code> 传入的就是指向一堆 <code>[int,3]</code> 的指针：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">f</span><span class="params">(<span class="type">int</span> a[][<span class="number">3</span>])</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fun @f(%a_1: *[i32,3]) : i32</span><br></pre></td></tr></table></figure>
+<h4 id="数组参数使用">数组参数使用</h4>
+<p>IR 增加了 <code>getptr</code> 指令，把它与 <code>getelemptr</code> 做个对比：</p>
+<ul>
+<li><code>getelemptr</code> 是从聚合类型 (如数组、结构体) 中获取某个元素的地址，比如：</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@arr = alloc [i32, 4]       # *[i32, 4] 类型</span><br><span class="line">%0 = getelemptr @arr, 1     # 获得 arr[1] 的指针，*i32 类型</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>getptr</code> 是移动指针到某个元素处</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@arr = alloc *i32           # 为 **i32 类型</span><br><span class="line">%0 = load @arr              # 得到 *i32 类型，指向的其实是 arr[0]</span><br><span class="line">%1 = getptr %0, 1           # 移动一个元素得到 arr[1] 的地址，还是 *i32 类型</span><br></pre></td></tr></table></figure>
+<p>…一个是<strong>降维取子元素</strong>、一个是<strong>当前维度取后面元素</strong>，虽然本质都是指针位置的移动，但是为了满足 Koopa IR 对符号类型的规定，以及让目标代码生成能清晰一点点 (我自认为的)，在数组参数使用时需要 <code>load</code> + <code>getptr</code> 起手，且不能用 <code>getelemptr</code> 替代。</p>
+<p><strong>(1) 先看为什么需要 <code>getptr</code></strong>：</p>
+<p>以 <code>int arr[2][3]</code> 为例，函数接收参数为 <code>int arr[][3]</code> ，分别在<strong>普通数组</strong>和<strong>参数数组</strong>情况下分析，目标是获取 <code>arr[1][2]</code> 的地址。</p>
+<p><strong>普通数组</strong>的类型为 <code>[[i32, 3], 2]</code> ，只需——</p>
+<ul>
+<li>先 <code>getelemptr</code> 得到子元素 <code>arr[1]</code> (<code>[i32, 3]</code>)</li>
+<li>再 <code>getelemptr</code> 得到子元素 <code>arr[1][2]</code> (<code>i32</code>)</li>
+</ul>
+<p>——就能得到指向目标成员的指针 <code>%1</code>，具体 IR 如下</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@arr = alloc [[i32, 3], 2]      # @arr 为 *[[i32, 3], 2] 类型</span><br><span class="line">%0 = getelemptr @arr, 1         # %0 为 *[i32, 3] 类型</span><br><span class="line">%1 = getelemptr %0, 2           # %1 为 *i32 类型</span><br><span class="line">store 1, %1                     # 然后对 a[1][2] 执行 load/store 操作</span><br></pre></td></tr></table></figure>
+<p><strong>参数数组</strong> <code>int arr[][3]</code> 的类型是 <code>*[i32, 3]</code>，这就已经是 <code>arr[0]</code> 了，用 <code>getelemptr</code> 就是降维去取 <code>arr[0]</code> 的子元素了，所以要用 <code>getptr</code> 在当前维度移动——</p>
+<ul>
+<li>先 <code>getptr</code> 从 <code>a[0]</code> 移动到 <code>arr[1]</code> (都是<code>[i32, 3]</code>)</li>
+<li>再 <code>getelemptr</code> 得子元素 <code>arr[1][2]</code> (<code>i32</code>)</li>
+</ul>
+<p>——具体 IR 如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@arr = alloc *[i32, 3]          # @arr 其实是 **[i32, 3]</span><br><span class="line">store %arr, @arr</span><br><span class="line"></span><br><span class="line">%0 = load @arr                  # %0 为 *[i32, 3]，指向 arr[0]</span><br><span class="line">%1 = getptr %0, 1               # %1 为 *[i32, 3]，指向 arr[1]</span><br><span class="line">%2 = getelemptr %1, 2           # %2 为 *i32</span><br><span class="line">store 1, %2                     # 然后对 a[1][2] 执行 load/store 操作</span><br></pre></td></tr></table></figure>
+<p>而且如果传入的是 <code>arr[]</code> 类型 <code>*i32</code> ，那 <code>getelemptr</code> 根本取不了 <code>i32</code> 的子元素。</p>
+<p><strong>(2) 再解释下为什么要有 <code>load</code></strong>：</p>
+<p>两点</p>
+<p>一，类型规定上需要用 <code>load</code> 把 <code>**...</code> 变成 <code>*...</code></p>
+<p>二，(俺寻思的) RISC-V 生成时，<code>getelemptr @arr</code> 用 <code>addi</code>；但 <code>getptr @arr</code> 不能用相同的逻辑，因为这两个 <code>@arr</code> 其实不一样。前者是 <code>sp</code> 加 <code>@arr</code> 偏移量是地址，但后者是 <code>@arr</code> 对应内存里的是地址 (你品，你细品)，后者反而更像 <code>%...</code> 该有的逻辑，所以干脆用 <code>load</code> 加载到 <code>%...</code> 中。</p>
+<h4 id="数组参数传入">数组参数传入</h4>
+<p><strong>函数参数传入</strong>时就把 <code>getptr</code> 或 <code>getelemptr</code> 得到的指针传入。比如 <code>a[2][3][4]</code> ，想给接收 <code>*[i32,4]</code> 的函数传入 <code>a[1]</code> ，就是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@a = alloc [[[i32, 4], 3], 2]   # *[[[i32, 4], 3], 2]</span><br><span class="line">%0 = getelemptr @a, 1           # *[[i32, 4], 3]</span><br><span class="line">%1 = getelemptr %0, 0           # *[i32, 4]</span><br><span class="line">%2 = call @f(%1)</span><br></pre></td></tr></table></figure>
+<p>或者：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@a = alloc *[[i32, 4], 3]       # **[[i32, 4], 3]</span><br><span class="line">%0 = load @a                    # *[[i32, 4], 3]</span><br><span class="line">%1 = getptr %0, 1               # *[[i32, 4], 3]</span><br><span class="line">%2 = getelemptr %1, 0           # *[i32, 4]</span><br><span class="line">%3 = call @f(%2)</span><br></pre></td></tr></table></figure>
+<p>值得注意的是 <code>%1 = getelemptr %0, 0</code> 这种得到的 <code>%1</code> 指向的地址与 <code>%0</code> 其实一样了，只是类型不一样，所以这么做单纯是为了满足类型的要求。</p>
+<p>与过去的冲突：前面每次遇到 <code>a[][][]</code> 都默认是数字，所以在一系列 <code>getelemptr</code> 后面会跟有 <code>load</code> ，但现在在函数传参时可能不需要 <code>load</code>，这个信息需要转递给 <code>LValAST_2</code> ，所以新增 <code>array_dim</code> 记录每个数组的维度，如果 <code>LValAST_2</code> 用到了数组但是维度不全就不 <code>load</code> 了。</p>
+<h4 id="重名-Bug">重名 Bug</h4>
+<p>某个测试样例出现了参数名为 <code>%end_1</code> 的情况，但这与跳转标签 <code>%end_1</code> 重名，不可以。所以暂时打个小补丁，在 <code>sema.hpp</code> 中将变量 <code>%end_1</code> 命名为 <code>%end_var_1</code>。</p>
+<h3 id="RISC-V-生成-3">RISC-V 生成</h3>
+<p>简单，要做的无非就：</p>
+<ul>
+<li>处理 <code>getptr</code></li>
+<li>处理 ValueIR_9 数组参数 alloc</li>
+<li>栈的分配加上 ValueIR_9</li>
+</ul>
+<p>第一次知道 RISC-V 中不同函数里的跳转标签也不能重名。</p>
+<h2 id="测试-｡v-v｡">测试 (｡v_v｡)</h2>
+<p>结束了！<br>
+<img src="/img/战编译/Lab9_pass.jpg" width=300px></p>
+<h2 id="总结">总结</h2>
+<p>最困难的一个 Lab ，数组的加入让每个模块都发生了巨大的改动，然而在改动的时候，我并没有体会到什么巧妙的设计，更多的只是功能的堆叠和与过去做兼容。</p>
+<p>回过头看，每个 Lab 只是把词法/语法分析、语义分析、IR 生成、RISC-V 生成重新过了一遍——加入新的节点，为新的节点实现函数，堆叠 STL 容器以传递信息，了解 Koopa IR 和 RISC-V 的每条指令然后逐一替换…</p>
+<p>现在我很难说自己得到了什么项目经验，但手搓的这 8000 行代码可以在删删改改中实现最终功能而不是成为屎山半途而废，我觉得自己还是做对了一些事的，比如…勤于做小规模的重构？</p>
+<p>接下来，是新的开始啊</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PKUcompiler/">PKUcompiler</a><a class="post-meta__tags" href="/tags/CSdiy/">CSdiy</a></div><div class="post-share"><div class="social-share" data-image="/img/cover/Compilers.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/09/08/PKUcompiler-Lab9-1/" title="PKU 编译原理实践 Lab9+1"><img class="cover" src="/img/cover/Compilers.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">PKU 编译原理实践 Lab9+1</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 拓展一，实现了函数声明，编译了几个 SysY 项目，解决了一处 shift/reduce 冲突，优化了初始化列表</div></div></div></a><a class="pagination-related" href="/2025/09/03/pwn-sandboxing/" title="Sandboxing (沙箱)"><img class="cover" src="/img/cover/pwncollege.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Sandboxing (沙箱)</div></div><div class="info-2"><div class="info-item-1">Pwn.college sandboxing 模块的课堂笔记</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/08/13/PKUcompiler-Lab7/" title="PKU 编译原理实践 Lab7"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-13</div><div class="info-item-2">PKU 编译原理实践 Lab7</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第七个测试，添加了 while 语句，以及 break、continue 指令</div></div></div></a><a class="pagination-related" href="/2025/10/20/PKUcompiler-Lab9-2/" title="PKU 编译原理实践 Lab9+2"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-20</div><div class="info-item-2">PKU 编译原理实践 Lab9+2</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 拓展二，通过活跃变量分析实现了死代码消除，寄存器分配没做</div></div></div></a><a class="pagination-related" href="/2025/08/02/PKUcompiler-Lab3/" title="PKU 编译原理实践 Lab3"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-02</div><div class="info-item-2">PKU 编译原理实践 Lab3</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第三个测试，实现了对表达式的处理，并重构了部分模块</div></div></div></a><a class="pagination-related" href="/2025/08/11/PKUcompiler-Lab6/" title="PKU 编译原理实践 Lab6"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-11</div><div class="info-item-2">PKU 编译原理实践 Lab6</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第六个测试，添加了 if-else 语句处理，实现了逻辑表达式短路求值</div></div></div></a><a class="pagination-related" href="/2025/07/21/PKUcompiler-Lab1/" title="PKU 编译原理实践 Lab1"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-21</div><div class="info-item-2">PKU 编译原理实践 Lab1</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第一个测试，实现了最简单的 Koopa IR 生成</div></div></div></a><a class="pagination-related" href="/2025/07/22/PKUcompiler-Lab2/" title="PKU 编译原理实践 Lab2"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-22</div><div class="info-item-2">PKU 编译原理实践 Lab2</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第二个测试，实现了从最简单的 Koopa IR 生成最简单的 RISC-V</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LesserLordKusanali1027</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LesserLordKusanali1027"><i class="fab fa-github"></i><span>我的 GitHub</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lab9%EF%BC%8C%E5%86%B3%E6%88%98"><span class="toc-number">1.</span> <span class="toc-text">Lab9，决战</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="toc-number">2.</span> <span class="toc-text">一维数组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">词法&#x2F;语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90"><span class="toc-number">2.2.</span> <span class="toc-text">语义分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AC%A6%E5%8F%B7%E8%A1%A8"><span class="toc-number">2.2.1.</span> <span class="toc-text">符号表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8A%98%E5%8F%A0"><span class="toc-number">2.2.2.</span> <span class="toc-text">常量折叠</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%A3%80%E6%B5%8B"><span class="toc-number">2.2.3.</span> <span class="toc-text">报错检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">2.2.4.</span> <span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IR-%E7%94%9F%E6%88%90"><span class="toc-number">2.3.</span> <span class="toc-text">IR 生成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%A3%B0%E6%98%8E"><span class="toc-number">2.3.1.</span> <span class="toc-text">数组声明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.3.2.</span> <span class="toc-text">数组初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E6%88%90%E5%91%98%E5%AD%98%E5%8F%96"><span class="toc-number">2.3.3.</span> <span class="toc-text">数组成员存取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E6%80%A7%E6%88%90%E6%9E%9C"><span class="toc-number">2.3.4.</span> <span class="toc-text">阶段性成果</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RISC-V-%E7%94%9F%E6%88%90"><span class="toc-number">2.4.</span> <span class="toc-text">RISC-V 生成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%85%A8%E5%B1%80%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">2.4.1.</span> <span class="toc-text">处理全局初始化</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86-getelemptr"><span class="toc-number">2.4.2.</span> <span class="toc-text">处理 getelemptr</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-store-%E5%92%8C-load"><span class="toc-number">2.4.3.</span> <span class="toc-text">关于 store 和 load</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%B6%E6%AE%B5%E6%80%A7%E6%88%90%E6%9E%9C-2"><span class="toc-number">2.4.4.</span> <span class="toc-text">阶段性成果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="toc-number">3.</span> <span class="toc-text">多维数组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90-2"><span class="toc-number">3.1.</span> <span class="toc-text">词法&#x2F;语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90-2"><span class="toc-number">3.2.</span> <span class="toc-text">语义分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%88%9D%E5%A7%8B%E5%8C%96%E5%88%97%E8%A1%A8"><span class="toc-number">3.2.1.</span> <span class="toc-text">处理初始化列表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%A5%E9%94%99%E6%A3%80%E6%B5%8B-2"><span class="toc-number">3.2.2.</span> <span class="toc-text">报错检测</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IR-%E7%94%9F%E6%88%90-2"><span class="toc-number">3.3.</span> <span class="toc-text">IR 生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RISC-V-%E7%94%9F%E6%88%90-2"><span class="toc-number">3.4.</span> <span class="toc-text">RISC-V 生成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%86%85%E5%AE%B9"><span class="toc-number">3.4.1.</span> <span class="toc-text">基本内容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Debug"><span class="toc-number">3.4.2.</span> <span class="toc-text">Debug</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">数组参数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E6%B3%95-%E8%AF%AD%E6%B3%95%E5%88%86%E6%9E%90-3"><span class="toc-number">4.1.</span> <span class="toc-text">词法&#x2F;语法分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E4%B9%89%E5%88%86%E6%9E%90-3"><span class="toc-number">4.2.</span> <span class="toc-text">语义分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">4.2.1.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-2"><span class="toc-number">4.2.2.</span> <span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IR-%E7%94%9F%E6%88%90-3"><span class="toc-number">4.3.</span> <span class="toc-text">IR 生成</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E4%BD%9C%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="toc-number">4.3.1.</span> <span class="toc-text">数组作函数参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0%E4%BD%BF%E7%94%A8"><span class="toc-number">4.3.2.</span> <span class="toc-text">数组参数使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0%E4%BC%A0%E5%85%A5"><span class="toc-number">4.3.3.</span> <span class="toc-text">数组参数传入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E5%90%8D-Bug"><span class="toc-number">4.3.4.</span> <span class="toc-text">重名 Bug</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RISC-V-%E7%94%9F%E6%88%90-3"><span class="toc-number">4.4.</span> <span class="toc-text">RISC-V 生成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-%EF%BD%A1v-v%EF%BD%A1"><span class="toc-number">5.</span> <span class="toc-text">测试 (｡v_v｡)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/06/09/games101-3/" title="GAMES101 作业 (3)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (3)"/></a><div class="content"><a class="title" href="/2026/06/09/games101-3/" title="GAMES101 作业 (3)">GAMES101 作业 (3)</a><time datetime="2026-06-09T09:38:23.000Z" title="发表于 2026-06-09 17:38:23">2026-06-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/18/games101-2/" title="GAMES101 作业 (2)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (2)"/></a><div class="content"><a class="title" href="/2026/03/18/games101-2/" title="GAMES101 作业 (2)">GAMES101 作业 (2)</a><time datetime="2026-03-18T11:43:19.000Z" title="发表于 2026-03-18 19:43:19">2026-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/14/pwn-kernel/" title="Kernel Security (内核安全)"><img src="/img/cover/pwncollege.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kernel Security (内核安全)"/></a><div class="content"><a class="title" href="/2026/03/14/pwn-kernel/" title="Kernel Security (内核安全)">Kernel Security (内核安全)</a><time datetime="2026-03-14T11:48:33.000Z" title="发表于 2026-03-14 19:48:33">2026-03-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/Background2.jpg);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By LesserLordKusanali1027</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

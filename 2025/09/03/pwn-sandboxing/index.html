@@ -1,0 +1,268 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Sandboxing (沙箱) | Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶</title><meta name="author" content="LesserLordKusanali1027"><meta name="copyright" content="LesserLordKusanali1027"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Pwn.college sandboxing 模块的课堂笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sandboxing (沙箱)">
+<meta property="og:url" content="http://example.com/2025/09/03/pwn-sandboxing/index.html">
+<meta property="og:site_name" content="Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶">
+<meta property="og:description" content="Pwn.college sandboxing 模块的课堂笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cover/pwncollege.png">
+<meta property="article:published_time" content="2025-09-03T15:47:43.000Z">
+<meta property="article:modified_time" content="2026-06-16T02:14:44.451Z">
+<meta property="article:author" content="LesserLordKusanali1027">
+<meta property="article:tag" content="Pwn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cover/pwncollege.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Sandboxing (沙箱)",
+  "url": "http://example.com/2025/09/03/pwn-sandboxing/",
+  "image": "http://example.com/img/cover/pwncollege.png",
+  "datePublished": "2025-09-03T15:47:43.000Z",
+  "dateModified": "2026-06-16T02:14:44.451Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LesserLordKusanali1027",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/09/03/pwn-sandboxing/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Sandboxing (沙箱)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/cover/SilverWolf2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"></a><a class="nav-page-title" href="/"><span class="site-name">Sandboxing (沙箱)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Sandboxing (沙箱)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2025-09-03T15:47:43.000Z" title="发表于 2025-09-03 23:47:43">2025-09-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Pwn-college/">Pwn.college</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>沙箱技术，通过隔离运行环境防止对系统其他部分造成破坏，虚拟机、容器等都属于沙箱技术，下面将介绍几个简单的沙箱技术。</p>
+<h2 id="Filesystem-Sandboxing">Filesystem Sandboxing</h2>
+<p><strong>介绍chroot：</strong></p>
+<p>一种隔离文件系统访问的沙箱技术，将进程的根目录修改到一个子目录下，这样该进程就无法访问除子目录以外的其他地方。</p>
+<p>比如输入下面的命令，会运行<code>/tmp/jail/busybox</code>，但<code>/busybox</code>眼中的根目录<code>/</code>实际上是系统中的<code>/tmp/jail</code>；而如果程序busybox在<code>/tmp/jail</code>下运行<code>cd ..</code>，还会停留在<code>/tmp/jail</code>中，因为这在busybox看来就是根目录了。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> <span class="built_in">chroot</span> /tmp/jail /busybox</span><br></pre></td></tr></table></figure>
+<p><strong>chroot实现方法：</strong></p>
+<p>事实上chroot只做了：</p>
+<ol>
+<li>对该进程而言，<code>/</code>表示<code>/tmp/jail</code></li>
+<li>对该进程而言，<code>/tmp/jail/..</code>会进入<code>/tmp/jail</code></li>
+</ol>
+<p>chroot并没有：</p>
+<ol>
+<li>真正对进程关闭其他文件的权限</li>
+<li>主动进入jail目录下</li>
+<li>…</li>
+</ol>
+<p>例如，下面是一个正确的程序，/busybox在新的根目录下开始运行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    chroot(<span class="string">&quot;/tmp/jail&quot;</span>); #将当前进程根目录改为/tmp/jail</span><br><span class="line">    <span class="title function_">chdir</span><span class="params">(<span class="string">&quot;/&quot;</span>)</span>; #将工作目录切换到新目录</span><br><span class="line">    execl(<span class="string">&quot;/busybox&quot;</span>, <span class="string">&quot;sh&quot;</span>, <span class="number">0</span>); #切换进程</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但如果忘记了chdir()，<code>/busybox</code>运行在<code>/tmp/jail</code>之外，虽然<code>/</code>仍表示根目录<code>/tmp/jail</code>，但其他文件可以用相对路径访问。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    chroot(<span class="string">&quot;/tmp/jail&quot;</span>); #将当前进程根目录改为/tmp/jail</span><br><span class="line">    <span class="title function_">execl</span><span class="params">(<span class="string">&quot;/busybox&quot;</span>, <span class="string">&quot;sh&quot;</span>, <span class="number">0</span>)</span>; #切换进程</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>chroot漏洞1：</strong></p>
+<p>chroot不会检测之前打开的资源，如果chroot前留下了jail外面的文件描述符，那么在jail里可通过openat和execveat联系外部。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">open</span><span class="params">(<span class="type">char</span>* pathname, <span class="type">int</span> flags, <span class="type">mode_t</span> mode)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">openat</span><span class="params">(<span class="type">int</span> dirfd, <span class="type">char</span>* pathname, <span class="type">int</span> flags, <span class="type">mode_t</span> mode)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">execve</span><span class="params">(<span class="type">char</span>* pathname, <span class="type">char</span>** argv, <span class="type">char</span>** envp)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">execveat</span><span class="params">(<span class="type">int</span> dirfd, <span class="type">char</span>* pathname, <span class="type">char</span>** argv, <span class="type">char</span>** envp, <span class="type">int</span> flags)</span>;</span><br><span class="line"><span class="comment">//openat、execveat与open、execve功能相似，只是额外接受一个已经打开的文件描述符、使用相对路径</span></span><br><span class="line"><span class="comment">//由此可以实现绕过jail</span></span><br></pre></td></tr></table></figure>
+<p><strong>chroot漏洞2：</strong></p>
+<p>单个进程可以多次chroot，后面的会把前面的覆盖。</p>
+<p><strong>总结：</strong></p>
+<p>chroot有很多方法可以绕过；而且没有提供其他的隔离，比如进程PID、网络、进程通信。</p>
+<p>现在采用了其他替代方案，如cgroups、namespaces、seccomp，会在后续讨论。</p>
+<h2 id="System-Call-Sandboxing">System Call Sandboxing</h2>
+<p><strong>介绍seccomp：</strong></p>
+<p>用于限制系统调用，内核级别，可以用seccomp来禁用或允许特定的系统调用，是现代沙箱的重要一部分，Linux、Chrome、Firefox都依赖它来保证安全性。</p>
+<p><strong>一个例子：</strong></p>
+<p>下面是一个使用<code>seccomp</code>创建沙箱的程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line">    scmp_filter_ctx ctx; <span class="comment">//创建过滤器</span></span><br><span class="line">    ctx = seccomp_init(SCMP_ACT_ALLOW); <span class="comment">//允许所有系统调用，黑名单制</span></span><br><span class="line">    seccomp_rule_add(ctx,SCMP_ACT_KILL,SCMP_SYS(execve),<span class="number">0</span>); <span class="comment">//添加规则，遇到execve就kill</span></span><br><span class="line">    seccomp_load(ctx); <span class="comment">//加载过滤器</span></span><br><span class="line"></span><br><span class="line">    execl(<span class="string">&quot;/bin/cat&quot;</span>,<span class="string">&quot;cat&quot;</span>,<span class="string">&quot;/flag&quot;</span>,(<span class="type">char</span>*)<span class="number">0</span>); <span class="comment">//这时这句execl就会在调用execve时被kill</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>seccomp会被子进程继承，如果上面禁止了read而非execve，那么execl可以正常运行，但子进程cat在调用read时还会被kill。</p>
+<p><strong>逃离seccomp 1：</strong> <code>permissive policies</code></p>
+<p>系统调用数量太多，难以用seccomp实现完美管理；继承关系很复杂，开发者可能会选择宽松的规则以避免某些系统调用在之后被禁止。</p>
+<p>一个典型的例子是如果seccomp允许<code>ptrace</code>，那么内存、寄存器都可随意修改，可以跳转到另一个进程中实现沙箱逃逸，这在CTF中比较常见。</p>
+<p>还比如<code>sendmsg</code>除了可以在进程间发送消息，还可以把消息伪造成文件；<code>prctl</code>可以造成很大的影响；<code>process_vm_writev</code>可以取得其他进程的一些权限，都可以用来逃出沙箱。</p>
+<p>这些系统调用很难被完美地管理，一旦有所疏漏就可以利用。</p>
+<p><strong>逃离seccomp 2：</strong> <code>syscall confusion</code></p>
+<p>x86-64（64位）系统上仍可运行amd64（32位）指令，比如下面两个程序，使用<code>gcc -static -nostdlib</code>编译成两个64位程序。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.global _start</span><br><span class="line">_start:</span><br><span class="line">.intel_syntax noprefix</span><br><span class="line">mov     rax, 60 #exit在syscall中对应的调用号</span><br><span class="line">syscall #64位的系统调用指令</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.global _start</span><br><span class="line">_start:</span><br><span class="line">.intel_syntax noprefix</span><br><span class="line">mov     eax, 1 #exit在int 0x80中对应的调用号</span><br><span class="line">int     0x80 #32位的系统调用指令</span><br></pre></td></tr></table></figure>
+<p>而如果把64位和32位混合起来，如下，并不会运行exit，因为<strong>syscall与int 0x80的系统调用号不一样</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.global _start</span><br><span class="line">_start:</span><br><span class="line">.intel_syntax noprefix</span><br><span class="line">mov     eax, 60 #exit在syscall中对应的调用号</span><br><span class="line">int     0x80 #32位的系统调用指令</span><br></pre></td></tr></table></figure>
+<img src="/img/Pwn/sandboxing/syscall_confusion.png">
+<p>seccomp沙箱默认是禁用32位的，但如果添加了允许32位的代码，又忘记在32位中额外禁用64位下被禁用的系统调用，就可以使用32位指令绕过seccomp。</p>
+<p><strong>逃离seccomp 3：</strong> <code>kernel vulnerabilities</code></p>
+<p>利用沙箱现有指令触发内核漏洞。</p>
+<p><strong>对于普通ctfer：</strong></p>
+<p>我们可以不必运行诸如/bin/cat等程序，只要能泄露一些数据（flag）即可。比如用sleep(x)、exit(x)都可以泄露数据（所谓侧信道），只要能泄露1bit就能泄露更多。</p>
+<h2 id="Sandboxing-via-Namespaces">Sandboxing via Namespaces</h2>
+<p>Namespace（命名空间）可以提供操作系统级别的隔离，是实现Docker、Cloud的关键技术，命名空间其实是一系列资源的集合，包括网络设备、挂载点、PID等。</p>
+<p><strong>先介绍挂载(mount)的概念：</strong></p>
+<p>Linux系统把设备等关联到文件系统中，这些文件就成为访问这些设备的入口，比如键盘、鼠标、磁盘分区、U盘等在文件系统中都有对应的文件，这个关联过程就叫做挂载(mount)，</p>
+<p>比如<code>/dev/input/mouse0</code>对应鼠标，执行<code>cat /dev/input/mouse0</code>后移动鼠标就可以看到输出。</p>
+<img src="/img/Pwn/sandboxing/namespace_mouse.png">
+<p>而运行<code>mount</code>可以看到文件系统的挂载情况，下面截取了4行，<code>/dev</code>文件夹中挂载了所有连接到电脑的设备，前面的<code>/dev/input/mouse0</code>就连接了鼠标。</p>
+<img src="/img/Pwn/sandboxing/namespace_mount.png">
+<p><strong>介绍unshare：</strong></p>
+<p>正常的fork()得到的子进程会与父进程共享很多资源，而通过unshare可以在新的namespace中开启进程，使子进程使用独立的资源。</p>
+<p>使用<code>unshare</code>创建新进程，<code>-m</code>表示开启的新shell将使用新的挂载</p>
+<img src="/img/Pwn/sandboxing/namespace_unshare_start.png">
+<p>这时运行<code>mount</code>其实还能看到父级的挂载</p>
+<img src="/img/Pwn/sandboxing/namespace_unshare_oldmount.png">
+<p>执行mount进行新的挂载，将<code>/bin</code>绑定到<code>./tmp_bin</code>，现在对./tmp_bin操作就相当于对/bin。使用<code>umount ./tmp_bin</code>可以解除挂载，文件夹原本的内容重新可见。</p>
+<img src="/img/Pwn/sandboxing/namespace_unshare_tmpbin.png">
+<p>查看./tmp_bin，会得到/bin的内容：</p>
+<img src="/img/Pwn/sandboxing/namespace_unshare_looktmpbin.png">
+<p>但是在另一个shell中查看tmp_bin时，并不能看到/bin的内容，这是因为两个shell位于不同的<code>mount namespace</code>中，<strong>挂载(mount)操作是相互独立的</strong>。</p>
+<p>不过两个shell都可以看到tmp_bin，因为文件系统是共享的，只是挂载的方式不同。</p>
+<img src="/img/Pwn/sandboxing/namespace_unshare_other_tmpbin.png">
+<p>输入exit可以退出unshare。</p>
+<p><strong>进一步了解unshare：</strong></p>
+<p>创建有独立挂载和独立网络的进程：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> unshare -m -n bash</span><br></pre></td></tr></table></figure>
+<p>创建有独立PID空间的进程：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> unshare -m -n -p --fork bash</span><br></pre></td></tr></table></figure>
+<p>正常情况下，新进程会继承原来的PID空间，新进程执行<code>ps aux</code>仍可以看到所有进程，如下。</p>
+<img src="/img/Pwn/sandboxing/namespace_psaux1.png">
+<p>但如果unshare时执行<code>--mount-proc</code>挂载新的/proc文件，新进程眼中的PID空间将重新编号变成下面这样。</p>
+<img src="/img/Pwn/sandboxing/namespace_psaux2.png">
+<p>就这样，我们得到了一个工作在自己命名空间里的进程，它只能看到自己的网络、自己的进程，但仍可以访问整个文件系统。</p>
+<p><strong>走得更远：</strong></p>
+<p>创建一个独立的文件系统并进入</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> unshare -m -n -p --fork --mount-proc /bin/bash</span><br><span class="line"><span class="comment">#创建独立文件系统</span></span><br><span class="line"><span class="built_in">mkdir</span> tiny</span><br><span class="line"><span class="built_in">cd</span> tiny</span><br><span class="line"><span class="built_in">mkdir</span> bin usr lib lib64 proc</span><br><span class="line">mount --<span class="built_in">bind</span> /bin ./bin</span><br><span class="line">mount --<span class="built_in">bind</span> /usr ./usr</span><br><span class="line">mount --<span class="built_in">bind</span> /lib ./lib</span><br><span class="line">mount --<span class="built_in">bind</span> /lib64 ./lib64</span><br><span class="line">mount --<span class="built_in">bind</span> /proc ./proc</span><br><span class="line"><span class="comment">#可以通过chroot进入，但这并不安全</span></span><br><span class="line"><span class="built_in">chroot</span> .</span><br><span class="line"><span class="comment">#另一种建立新根的安全的方法</span></span><br><span class="line"><span class="built_in">mkdir</span> old_root</span><br><span class="line">mount --<span class="built_in">bind</span> <span class="variable">$PWD</span> <span class="variable">$PWD</span></span><br><span class="line"><span class="comment">#pivor_root将$PWD作为新根目录，将旧根目录挂载到old_root</span></span><br><span class="line">pivot_root <span class="variable">$PWD</span> <span class="variable">$PWD</span>/old_root <span class="comment">#第一个参数必须是挂载过的文件夹，所以前面将$PWD与自身挂载</span></span><br><span class="line"><span class="comment">#进入新根</span></span><br><span class="line"><span class="built_in">cd</span> /</span><br><span class="line"><span class="comment">#懒惰umount + 删除old_root</span></span><br><span class="line">umount -l old_root</span><br><span class="line"><span class="built_in">rm</span> -r old_root</span><br></pre></td></tr></table></figure>
+<p>虽然不知道是如何在不影响原根的情况下删掉的old_root，但是这样就得到了一个有独立文件系统、独立PID空间、独立网络的docker容器。</p>
+<p>不过如果修改这些挂载文件，原本的根文件也会被修改。</p>
+<p>距离真正的docker还有对共享资源的限制访问、seccomp限制操作等，如果在某个地方出错了，那这个docker就是可逃脱的。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Pwn/">Pwn</a></div><div class="post-share"><div class="social-share" data-image="/img/cover/pwncollege.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/09/05/PKUcompiler-Lab9/" title="PKU 编译原理实践 Lab9"><img class="cover" src="/img/cover/Compilers.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">PKU 编译原理实践 Lab9</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第九个测试，完成了一维、多维数组的初始化和使用，并将数组加入了函数参数中</div></div></div></a><a class="pagination-related" href="/2025/08/24/pwn-dynamic-allocator-misuse/" title="Dynamic Allocator Misuse (堆利用)"><img class="cover" src="/img/cover/pwncollege.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Dynamic Allocator Misuse (堆利用)</div></div><div class="info-2"><div class="info-item-1">Pwn.college dynamic allocator misuse 模块的课堂笔记</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/07/10/pwn-shellcode/" title="Shellcode Injection (命令行代码注入)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-10</div><div class="info-item-2">Shellcode Injection (命令行代码注入)</div></div><div class="info-2"><div class="info-item-1">Pwn.college shellcode injection 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2025/08/24/pwn-dynamic-allocator-misuse/" title="Dynamic Allocator Misuse (堆利用)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-24</div><div class="info-item-2">Dynamic Allocator Misuse (堆利用)</div></div><div class="info-2"><div class="info-item-1">Pwn.college dynamic allocator misuse 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2025/10/04/pwn-race-conditions/" title="Race Conditions (条件竞争)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-04</div><div class="info-item-2">Race Conditions (条件竞争)</div></div><div class="info-2"><div class="info-item-1">Pwn.college race conditions 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2026/03/14/pwn-kernel/" title="Kernel Security (内核安全)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-14</div><div class="info-item-2">Kernel Security (内核安全)</div></div><div class="info-2"><div class="info-item-1">Pwn.college kernel security 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2025/11/13/pwn-format-string/" title="Format String Exploits (格式化字符串利用)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-13</div><div class="info-item-2">Format String Exploits (格式化字符串利用)</div></div><div class="info-2"><div class="info-item-1">Pwn.college format string 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2026/02/21/pwn-file-struct/" title="File Struct Exploits (文件结构体利用)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">File Struct Exploits (文件结构体利用)</div></div><div class="info-2"><div class="info-item-1">Pwn.college file struct exploits 模块的课堂笔记</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LesserLordKusanali1027</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LesserLordKusanali1027"><i class="fab fa-github"></i><span>我的 GitHub</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Filesystem-Sandboxing"><span class="toc-number">1.</span> <span class="toc-text">Filesystem Sandboxing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#System-Call-Sandboxing"><span class="toc-number">2.</span> <span class="toc-text">System Call Sandboxing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Sandboxing-via-Namespaces"><span class="toc-number">3.</span> <span class="toc-text">Sandboxing via Namespaces</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/06/09/games101-3/" title="GAMES101 作业 (3)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (3)"/></a><div class="content"><a class="title" href="/2026/06/09/games101-3/" title="GAMES101 作业 (3)">GAMES101 作业 (3)</a><time datetime="2026-06-09T09:38:23.000Z" title="发表于 2026-06-09 17:38:23">2026-06-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/18/games101-2/" title="GAMES101 作业 (2)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (2)"/></a><div class="content"><a class="title" href="/2026/03/18/games101-2/" title="GAMES101 作业 (2)">GAMES101 作业 (2)</a><time datetime="2026-03-18T11:43:19.000Z" title="发表于 2026-03-18 19:43:19">2026-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/14/pwn-kernel/" title="Kernel Security (内核安全)"><img src="/img/cover/pwncollege.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kernel Security (内核安全)"/></a><div class="content"><a class="title" href="/2026/03/14/pwn-kernel/" title="Kernel Security (内核安全)">Kernel Security (内核安全)</a><time datetime="2026-03-14T11:48:33.000Z" title="发表于 2026-03-14 19:48:33">2026-03-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/cover/SilverWolf2.jpg);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By LesserLordKusanali1027</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Format String Exploits (格式化字符串利用) | Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶</title><meta name="author" content="LesserLordKusanali1027"><meta name="copyright" content="LesserLordKusanali1027"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Pwn.college format string 模块的课堂笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Format String Exploits (格式化字符串利用)">
+<meta property="og:url" content="http://example.com/2025/11/13/pwn-format-string/index.html">
+<meta property="og:site_name" content="Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶">
+<meta property="og:description" content="Pwn.college format string 模块的课堂笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cover/pwncollege.png">
+<meta property="article:published_time" content="2025-11-13T15:48:12.000Z">
+<meta property="article:modified_time" content="2026-06-16T02:20:32.917Z">
+<meta property="article:author" content="LesserLordKusanali1027">
+<meta property="article:tag" content="Pwn">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cover/pwncollege.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Format String Exploits (格式化字符串利用)",
+  "url": "http://example.com/2025/11/13/pwn-format-string/",
+  "image": "http://example.com/img/cover/pwncollege.png",
+  "datePublished": "2025-11-13T15:48:12.000Z",
+  "dateModified": "2026-06-16T02:20:32.917Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LesserLordKusanali1027",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/11/13/pwn-format-string/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Format String Exploits (格式化字符串利用)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/cover/SilverWolf2.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"></a><a class="nav-page-title" href="/"><span class="site-name">Format String Exploits (格式化字符串利用)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Format String Exploits (格式化字符串利用)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2025-11-13T15:48:12.000Z" title="发表于 2025-11-13 23:48:12">2025-11-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Pwn-college/">Pwn.college</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>格式化字符串漏洞利用</p>
+<h2 id="Introduction">Introduction</h2>
+<p><strong>printf传参方式：</strong></p>
+<p><code>printf</code>接收一系列参数，第一个参数被当成格式化字符串，后面的参数用于拼入格式化字符串。</p>
+<p>但<code>printf</code>盲目信任第一个格式化字符串，如果我们可以控制格式化字符串，事情就失控了。</p>
+<p><code>printf</code>的传参约定：<code>RSI,RDX,RCX,R8,R9,栈</code>。示例如下，在gdb中查看。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> &#123;</span><br><span class="line">    <span class="type">int</span> a = <span class="number">1</span>;</span><br><span class="line">    <span class="type">int</span> b = <span class="number">2</span>;</span><br><span class="line">    <span class="type">int</span> c = <span class="number">3</span>;</span><br><span class="line">    <span class="type">int</span> d = <span class="number">4</span>;</span><br><span class="line">    <span class="type">int</span> e = <span class="number">5</span>;</span><br><span class="line">    <span class="type">int</span> f = <span class="number">6</span>;</span><br><span class="line">    <span class="type">int</span> g = <span class="number">7</span>;</span><br><span class="line">    <span class="type">char</span> *name=<span class="string">&quot;Yoimiya&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d %d %d %d %d %d %d\n%s\n&quot;</span>,a,b,c,d,e,f,g,name);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在<code>call   printf@plt</code>处下断点，查看寄存器内容，<code>1~5</code>分别位于<code>rsi,rdx,rcx,r8,r9</code>中，与普通函数使用寄存器传参的规则相同。<br>
+<img src="/img/Pwn/format-string/introduction_register.jpg" width=500px></p>
+<p><code>rdi</code>指向格式化字符串的地址：<br>
+<img src="/img/Pwn/format-string/introduction_rdi.jpg" width=450px></p>
+<p>而剩下的3个参数，会通过栈传递，<code>6</code>、<code>7</code>和字符串地址被放在了栈顶。<strong>注意：</strong> 虽然<code>6</code>、<code>7</code>都是 4 bytes 的int，但放在栈上都占用 8bytes 空间。<br>
+<img src="/img/Pwn/format-string/introduction_stack.jpg"></p>
+<p>下面是格式化字符串漏洞存在的唯一条件：用户可以控制一个格式化字符串。即使没传输出参数，<code>printf</code>也会从寄存器和栈上取。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> &#123;</span><br><span class="line">    <span class="built_in">printf</span>(argv[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Leak-Data">Leak Data</h2>
+<p>如上面所见，<code>printf</code>取参数会以8字节为单位，寄存器和栈都如此，然后根据<code>%...</code>进行不同的解析。由此，可控制泄露信息的格式。</p>
+<p>一些格式化字符的例子：</p>
+<ul>
+<li><code>%c</code> 一个char字符，1byte</li>
+<li><code>%d</code>、<code>%i</code> int显示为十进制数，4byte</li>
+<li><code>%x</code> 显示十六进制数，4bytes</li>
+<li><code>%hx</code> 显示十六进制数，2bytes (一些控制位数的前缀)</li>
+<li><code>%hhx</code> 显示十六进制数，1bytes</li>
+<li><code>%lx</code> 显示十六进制数，8bytes</li>
+<li><code>%s</code> 读取8bytes指针值，输出指向的字符串</li>
+<li><code>%n$..</code> 指定输出第n个参数</li>
+</ul>
+<p>程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** argv)</span> &#123;</span><br><span class="line">    <span class="type">char</span> fmt_str[<span class="number">256</span>];</span><br><span class="line">    <span class="type">char</span> *secret_value = <span class="string">&quot;love_yoimiya_forever&quot;</span>;</span><br><span class="line">    <span class="built_in">strcpy</span>(fmt_str, argv[<span class="number">1</span>]);</span><br><span class="line">    <span class="built_in">strcat</span>(fmt_str, <span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">printf</span>(fmt_str, <span class="number">0xBEEF1337</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用不同的格式化字符，对第一个传入参数<code>0xBEEF1337</code>做格式上的变换。<br>
+<img src="/img/Pwn/format-string/leak_data_beef.jpg" width=350px></p>
+<p>使用<code>%p</code>可以将8字节按十六进制输出，前5个是寄存器内容，后面是栈上内容。<br>
+<img src="/img/Pwn/format-string/leak_data_%25p.jpg"></p>
+<p>使用<code>%n$p</code>指定输出第n个参数，再用<code>%s</code>将其作为地址解析，就能泄露<code>secret_value</code>了。<br>
+<img src="/img/Pwn/format-string/leak_data_secret.jpg" width=500px></p>
+<h2 id="Writing-Data">Writing Data</h2>
+<p><strong>基本方法：</strong></p>
+<p><code>%n</code>会将当前输出的字节数写入某个指针指向的地址，可用来修改内存。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 小例子</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">    <span class="type">char</span> fmt_str[<span class="number">256</span>];</span><br><span class="line">    <span class="type">int</span> *print_flag = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>));</span><br><span class="line">    *print_flag = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">strcpy</span>(fmt_str, argv[<span class="number">1</span>]);</span><br><span class="line">    <span class="built_in">strcat</span>(fmt_str, <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(fmt_str, <span class="number">0xBEEF1337</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 要利用ftm_str将*print_flag改成1，才能得到flag</span></span><br><span class="line">    <span class="keyword">if</span>(*print_flag == <span class="number">1</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;flag&#123;A_simple_demo&#125;\n&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先确定<code>print_flag</code>在栈上的位置是<code>printf</code>的第几个参数。具体分析如下，输入<code>a%41$n</code>即可成功将<code>print_flag</code>改为1。<br>
+<img src="/img/Pwn/format-string/writing_data_basic_stack.jpg" width=400px border="1"/><br>
+<img src="/img/Pwn/format-string/writing_data_basic_success.jpg" width=500px></p>
+<p><strong>%n的一个特点：</strong></p>
+<p><code>%n</code>只会修改指针指向地址处的4字节，而不是修改8字节。如下，高4字节的<code>12345678</code>被保留，低4字节被改为<code>00000001</code>，就是说<code>%n</code>默认面对int指针。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">    <span class="type">char</span> fmt_str[<span class="number">256</span>];</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> <span class="type">int</span> *print_flag = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(<span class="type">long</span> <span class="type">long</span> <span class="type">int</span>));</span><br><span class="line">    *print_flag = <span class="number">0x1234567800000000</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">strcpy</span>(fmt_str, argv[<span class="number">1</span>]);</span><br><span class="line">    <span class="built_in">strcat</span>(fmt_str, <span class="string">&quot;\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(fmt_str, <span class="number">0xBEEF1337</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lx&quot;</span>,*print_flag);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<img src="/img/Pwn/format-string/writing_data_little.jpg" width=500px>
+<br/>
+<p><strong>其他技巧：</strong></p>
+<ul>
+<li>如果用户可控制的格式化字符串位于参数所在栈帧，可以将自己输入的内容作为指针，然后用<code>%n</code>解析，可以指向很多地方。</li>
+<li>帧指针<code>rbp</code>之间的关系也可以利用，比如下面利用<code>rbp1</code>指向<code>rbp2</code>存储处，来修改存储的帧指针值。<br>
+<img src="/img/Pwn/format-string/writing_data_other_rbp.jpg"></li>
+<li><strong>更灵活的写入</strong>，<code>%n</code>只能写4字节，不够灵活，添加前缀。
+<ul>
+<li><code>%hhn</code> 写1字节</li>
+<li><code>%hn</code> 写2字节</li>
+<li><code>%ln</code> 写8字节</li>
+</ul>
+</li>
+</ul>
+<p><strong>控制<code>%n</code>写入的数值：</strong></p>
+<p>可以使用空白填充语法，下面会在输出<code>%x</code>前先填充若干空格，使最终总字节数达到<code>1145258561</code>，并写入<code>buf</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> buf[<span class="number">4</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%1145258561x%1$n&quot;</span>, buf);</span><br><span class="line"><span class="comment">// 结果：</span></span><br><span class="line"><span class="comment">// &#x27;ABCD&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>但这太慢了，4字节可以达到很大的数字，以1字节为单位来写是更好的选择。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> buf[<span class="number">4</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%65x%1$hhn%c%2$hhn%c%3$hhn%c%4$hhn&quot;</span>, buf, buf+<span class="number">1</span>, buf+<span class="number">2</span>, buf+<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="Copy-Memory">Copy Memory</h2>
+<p><strong>dynamic padding（动态填充）</strong>：</p>
+<p>前面使用<code>%65x</code>这种方式进行填充，保证输出特定字节数；动态也是这个作用，但不使用具体数字（如<code>65</code>），而是用<code>%*</code>来从某个参数获取填充长度。</p>
+<p>比如：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">%*<span class="number">10</span>$c%<span class="number">11</span>$n</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>%*10$c</code>中，<code>*</code>表示填充值从某个参数获取，<code>10$</code>表示取第10个参数（<strong>可能</strong>转换为<code>int</code>）作为宽度值，<code>c</code>就是输出。</li>
+<li><code>%11$n</code>执行写操作。</li>
+</ul>
+<p>这个式子会将第10个参数的内容写到第11个参数指向的地址处。</p>
+<p>但若要写的内容太大，容易爆掉。</p>
+<p>遗留问题：%c从哪取不知道。</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Pwn/">Pwn</a></div><div class="post-share"><div class="social-share" data-image="/img/cover/pwncollege.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/02/20/games101-0/" title="GAMES101 作业 (0)"><img class="cover" src="/img/cover/games101.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">GAMES101 作业 (0)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 0，以及 Eigen 库的一些基本操作</div></div></div></a><a class="pagination-related" href="/2025/10/20/PKUcompiler-Lab9-2/" title="PKU 编译原理实践 Lab9+2"><img class="cover" src="/img/cover/Compilers.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">PKU 编译原理实践 Lab9+2</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 拓展二，通过活跃变量分析实现了死代码消除，寄存器分配没做</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/08/24/pwn-dynamic-allocator-misuse/" title="Dynamic Allocator Misuse (堆利用)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-24</div><div class="info-item-2">Dynamic Allocator Misuse (堆利用)</div></div><div class="info-2"><div class="info-item-1">Pwn.college dynamic allocator misuse 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2025/07/10/pwn-shellcode/" title="Shellcode Injection (命令行代码注入)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-10</div><div class="info-item-2">Shellcode Injection (命令行代码注入)</div></div><div class="info-2"><div class="info-item-1">Pwn.college shellcode injection 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2026/03/14/pwn-kernel/" title="Kernel Security (内核安全)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-14</div><div class="info-item-2">Kernel Security (内核安全)</div></div><div class="info-2"><div class="info-item-1">Pwn.college kernel security 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2025/10/04/pwn-race-conditions/" title="Race Conditions (条件竞争)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-10-04</div><div class="info-item-2">Race Conditions (条件竞争)</div></div><div class="info-2"><div class="info-item-1">Pwn.college race conditions 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2025/09/03/pwn-sandboxing/" title="Sandboxing (沙箱)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-03</div><div class="info-item-2">Sandboxing (沙箱)</div></div><div class="info-2"><div class="info-item-1">Pwn.college sandboxing 模块的课堂笔记</div></div></div></a><a class="pagination-related" href="/2025/07/26/pwn-reverse/" title="Reverse Engineering (逆向工程)"><img class="cover" src="/img/cover/pwncollege.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-26</div><div class="info-item-2">Reverse Engineering (逆向工程)</div></div><div class="info-2"><div class="info-item-1">Pwn.college reverse engineering 模块的课堂笔记</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LesserLordKusanali1027</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">27</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LesserLordKusanali1027"><i class="fab fa-github"></i><span>我的 GitHub</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Leak-Data"><span class="toc-number">2.</span> <span class="toc-text">Leak Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Writing-Data"><span class="toc-number">3.</span> <span class="toc-text">Writing Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Copy-Memory"><span class="toc-number">4.</span> <span class="toc-text">Copy Memory</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/06/09/games101-3/" title="GAMES101 作业 (3)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (3)"/></a><div class="content"><a class="title" href="/2026/06/09/games101-3/" title="GAMES101 作业 (3)">GAMES101 作业 (3)</a><time datetime="2026-06-09T09:38:23.000Z" title="发表于 2026-06-09 17:38:23">2026-06-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/18/games101-2/" title="GAMES101 作业 (2)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (2)"/></a><div class="content"><a class="title" href="/2026/03/18/games101-2/" title="GAMES101 作业 (2)">GAMES101 作业 (2)</a><time datetime="2026-03-18T11:43:19.000Z" title="发表于 2026-03-18 19:43:19">2026-03-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/03/14/pwn-kernel/" title="Kernel Security (内核安全)"><img src="/img/cover/pwncollege.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kernel Security (内核安全)"/></a><div class="content"><a class="title" href="/2026/03/14/pwn-kernel/" title="Kernel Security (内核安全)">Kernel Security (内核安全)</a><time datetime="2026-03-14T11:48:33.000Z" title="发表于 2026-03-14 19:48:33">2026-03-14</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/cover/SilverWolf2.jpg);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By LesserLordKusanali1027</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
