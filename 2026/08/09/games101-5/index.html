@@ -1,0 +1,284 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>GAMES101 作业 (5) | Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶</title><meta name="author" content="LesserLordKusanali1027"><meta name="copyright" content="LesserLordKusanali1027"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="GAMES101 作业 5，实现了光追渲染器中的光线生成和三角形求交，可以看到不同材质的球球和带格格的地面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAMES101 作业 (5)">
+<meta property="og:url" content="http://example.com/2026/08/09/games101-5/index.html">
+<meta property="og:site_name" content="Welcome to My Blog ٩(๑&gt; ₃ &lt;)۶">
+<meta property="og:description" content="GAMES101 作业 5，实现了光追渲染器中的光线生成和三角形求交，可以看到不同材质的球球和带格格的地面">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/cover/games101.png">
+<meta property="article:published_time" content="2026-08-09T14:21:27.000Z">
+<meta property="article:modified_time" content="2026-08-09T14:30:44.094Z">
+<meta property="article:author" content="LesserLordKusanali1027">
+<meta property="article:tag" content="CSdiy">
+<meta property="article:tag" content="GAMES101">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/cover/games101.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "GAMES101 作业 (5)",
+  "url": "http://example.com/2026/08/09/games101-5/",
+  "image": "http://example.com/img/cover/games101.png",
+  "datePublished": "2026-08-09T14:21:27.000Z",
+  "dateModified": "2026-08-09T14:30:44.094Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "LesserLordKusanali1027",
+      "url": "http://example.com"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2026/08/09/games101-5/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'GAMES101 作业 (5)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/cover/sweet.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"></a><a class="nav-page-title" href="/"><span class="site-name">GAMES101 作业 (5)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-grip"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">GAMES101 作业 (5)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-08-09T14:21:27.000Z" title="发表于 2026-08-09 22:21:27">2026-08-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/CG/">CG</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1>第 5 次作业</h1>
+<h2 id="作业框架分析">作业框架分析</h2>
+<p><strong>光线追踪</strong>和之前的<strong>光栅化</strong>是两种不同的成像方法，框架上也有一些区别，看一下这次光线追踪的作业框架吧~</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Code</span><br><span class="line">├── CMakeLists.txt</span><br><span class="line">├── global.hpp          # PI 值、一元二次方程求解等全局量、全局函数</span><br><span class="line">├── Vector.hpp          # 框架未使用 Eigen 库，就在这里自定义了 Vector3f、Vector2f 以及常用操作</span><br><span class="line">├── Light.hpp           # 点光源类</span><br><span class="line">├── Object.hpp          # 物体的基类，定义有材质、颜色等基本性质，以及求交、求性质等虚函数</span><br><span class="line">├── Sphere.hpp/cpp      # 球体类，继承自 Object</span><br><span class="line">├── Triangle.hpp        # 三角形网格类，继承自 Object</span><br><span class="line">├── Scene.hpp/cpp       # 场景类，存放物体和光源</span><br><span class="line">├── Renderer.hpp/cpp    # 核心渲染器，实现了光线追踪的操作，包括沿每个像素发射光线、光线投射、反射和折射等</span><br><span class="line">└── main.cpp            # 定义物体、光源并放入场景，然后用 Render 渲染</span><br></pre></td></tr></table></figure>
+<h3 id="物体类-Object、Sphere、MeshTriangle">物体类 (Object、Sphere、MeshTriangle)</h3>
+<p><code>Object.hpp</code> 中的 <code>Object</code> 类定义了物体的一些基本性质：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Object</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// material properties</span></span><br><span class="line">    MaterialType materialType;</span><br><span class="line">    <span class="type">float</span> ior;</span><br><span class="line">    <span class="type">float</span> Kd, Ks;</span><br><span class="line">    Vector3f diffuseColor;</span><br><span class="line">    <span class="type">float</span> specularExponent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ol>
+<li><code>specularExponent</code> 高光系数、<code>Kd</code> 和 <code>Ks</code>，都是 Blinn-Phong 模型中见过的参数</li>
+<li><code>diffuseColor</code> 漫反射的固有颜色</li>
+<li><code>ior</code> 折射率，Index of Refraction</li>
+<li><code>materialType</code> 材质类型，<code>MaterialType</code> 定义在 <code>global.hpp</code> 中，包括：
+<ul>
+<li><code>DIFFUSE_AND_GLOSSY</code>，漫反射 + 高光的材质，就是 Blinn-Phong 渲染出的样子</li>
+<li><code>REFLECTION_AND_REFRACTION</code>，有反射 + 折射，透明材质</li>
+<li><code>REFLECTION </code>，纯反射的，镜面材质</li>
+</ul>
+</li>
+</ol>
+<p><code>Sphere.hpp</code> 中继承 <code>Object</code> 类实现了 <code>Sphere</code> 类，看下 <code>intersect</code> 和 <code>getSurfaceProperties</code> 两个函数。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">bool</span> <span class="title">intersect</span><span class="params">(<span class="type">const</span> Vector3f&amp; orig, <span class="type">const</span> Vector3f&amp; dir, <span class="type">float</span>&amp; tnear, <span class="type">uint32_t</span>&amp;, Vector2f&amp;)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">getSurfaceProperties</span><span class="params">(<span class="type">const</span> Vector3f&amp; P, <span class="type">const</span> Vector3f&amp;, <span class="type">const</span> <span class="type">uint32_t</span>&amp;, <span class="type">const</span> Vector2f&amp;,</span></span></span><br><span class="line"><span class="params"><span class="function">                          Vector3f&amp; N, Vector2f&amp;)</span> <span class="type">const</span> <span class="keyword">override</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    N = <span class="built_in">normalize</span>(P - center);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><code>intersect</code> 接收光线的 <code>orig</code>、<code>dir</code> (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>r</mi><mo>⃗</mo></mover><mo>=</mo><mover accent="true"><mi>o</mi><mo>⃗</mo></mover><mo>+</mo><mi>t</mi><mover accent="true"><mi>d</mi><mo>⃗</mo></mover></mrow><annotation encoding="application/x-tex">\vec{r} = \vec{o} + t\vec{d}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.714em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1799em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.471em" height="0.714em" style="width:0.471em" viewBox="0 0 471 714" preserveAspectRatio="xMinYMin"><path d="M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7973em;vertical-align:-0.0833em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.714em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">o</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1799em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.471em" height="0.714em" style="width:0.471em" viewBox="0 0 471 714" preserveAspectRatio="xMinYMin"><path d="M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.9774em;"></span><span class="mord mathnormal">t</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9774em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">d</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.0688em;"><span class="overlay" style="height:0.714em;width:0.471em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.471em" height="0.714em" style="width:0.471em" viewBox="0 0 471 714" preserveAspectRatio="xMinYMin"><path d="M377 20c0-5.333 1.833-10 5.5-14S391 0 397 0c4.667 0 8.667 1.667 12 5
+3.333 2.667 6.667 9 10 19 6.667 24.667 20.333 43.667 41 57 7.333 4.667 11
+10.667 11 18 0 6-1 10-3 12s-6.667 5-14 9c-28.667 14.667-53.667 35.667-75 63
+-1.333 1.333-3.167 3.5-5.5 6.5s-4 4.833-5 5.5c-1 .667-2.5 1.333-4.5 2s-4.333 1
+-7 1c-4.667 0-9.167-1.833-13.5-5.5S337 184 337 178c0-12.667 15.667-32.333 47-59
+H213l-171-1c-8.667-6-13-12.333-13-19 0-4.667 4.333-11.333 13-20h359
+c-16-25.333-24-45-24-59z"/></svg></span></span></span></span></span></span></span></span></span></span>)，如果光线与球相交，就将 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi></mrow><annotation encoding="application/x-tex">t</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord mathnormal">t</span></span></span></span> 存入 <code>tnear</code> 作为第一个交点的位置并返回 <code>true</code></li>
+<li><code>getSurfaceProperties</code> 接收交点位置，返回该处的法向量，后续会被用于求反射、折射之类</li>
+</ol>
+<p><code>Triangle.hpp</code> 中的 <code>MeshTriangle</code> 类是用三角形网格表示的模型了。</p>
+<h3 id="场景类-Scene">场景类 (Scene)</h3>
+<p><code>Scene.hpp</code> 中的 <code>Scene</code> 类有如下成员：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Scene</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// setting up options</span></span><br><span class="line">    <span class="type">int</span> width = <span class="number">1280</span>;</span><br><span class="line">    <span class="type">int</span> height = <span class="number">960</span>;</span><br><span class="line">    <span class="type">double</span> fov = <span class="number">90</span>;</span><br><span class="line">    Vector3f backgroundColor = <span class="built_in">Vector3f</span>(<span class="number">0.235294</span>, <span class="number">0.67451</span>, <span class="number">0.843137</span>);</span><br><span class="line">    <span class="type">int</span> maxDepth = <span class="number">5</span>;</span><br><span class="line">    <span class="type">float</span> epsilon = <span class="number">0.00001</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">// creating the scene (adding objects and lights)</span></span><br><span class="line">    std::vector&lt;std::unique_ptr&lt;Object&gt; &gt; objects;</span><br><span class="line">    std::vector&lt;std::unique_ptr&lt;Light&gt; &gt; lights;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中：</p>
+<ol>
+<li><code>width</code>、<code>height</code> 是最终生成图像的尺寸</li>
+<li><code>fov</code> 相机垂直张开的视角大小，渲染时会用到</li>
+<li><code>maxDepth</code> 是光线在场景中弹射的最大次数</li>
+<li><code>epsilon</code> 挺有趣。计算折射、反射等光线后，由于浮点数精度误差，可能弹射后的光线在原地又折射、反射一次 (<strong>Self-intersection 问题</strong>)，所以要将弹射后光线的起点沿法线偏移一小段 (<code>epsilon</code>)，避免这种问题</li>
+<li><code>objects</code> 和 <code>lights</code> 存放物体和光源的对象</li>
+</ol>
+<h3 id="光线追踪渲染器-Renderer">光线追踪渲染器 (Renderer)</h3>
+<p>课上我了解了 <code>Recursive Ray Tracing</code> 的大体过程，但是并不清楚一些细节，比如：</p>
+<ul>
+<li>什么材质会发生反射、折射</li>
+<li>反射、折射时光强要如何变化</li>
+<li>多个弹射点的性质要如何结合到一起，来给一个像素着色</li>
+</ul>
+<p>以及其他的疑惑，比如：</p>
+<ul>
+<li>光追渲染器和光栅化渲染器的整体流程有什么区别，表述成模型大概是什么样的</li>
+<li>阴影是怎么做出来的，而且还是分两层的阴影</li>
+<li>背景是怎么加进去的，透明球上还能看到背景色</li>
+</ul>
+<p>因此看一下 <code>Renderer.hpp/cpp</code> 的代码是有必要的…emmm 尽管不懂也不耽误写作业…但是学自己感兴趣的东西还是完美主义一些叭~</p>
+<p><strong>整体来看</strong>：</p>
+<ol>
+<li><code>void Renderer::Render()</code> 是最顶层，会沿每个像素的方向发射一条光线，然后调用 <code>Vector3f castRay()</code> 获得像素颜色</li>
+<li><code>Vector3f castRay()</code> 调用 <code>std::optional&lt;hit_payload&gt; trace()</code> 计算光线与物体相交的第一个交点，然后对 3 种不同材质采取不同做法</li>
+<li><code>std::optional&lt;hit_payload&gt; trace()</code> 可求光线与场景中物体的<strong>第一个交点</strong>，返回 <code>struct hit_payload</code> 提供交点信息</li>
+<li>最后是工具函数 <code>Vector3f reflect()</code>、<code>Vector3f refract()</code> 和 <code>float fresnel()</code>，分别用来算反射后方向、算折射后方向以及算折射 + 反射的能量分配</li>
+</ol>
+<p><strong>不同材质的处理</strong>：</p>
+<p><code>castRay()</code> 中</p>
+<ol>
+<li><code>REFLECTION_AND_REFRACTION</code>，透明材质，递归继续追踪反射、折射光，按能量比例将两者返回的颜色相加</li>
+<li><code>REFLECTION</code>，镜面材质，递归追踪反射光，将反射光颜色乘以能量损失就结束</li>
+<li><code>DIFFUSE_AND_GLOSSY</code>，Blinn-Phong 模型，根据固有色，与光源连线计算</li>
+</ol>
+<p>…所以也不是每个弹射点都要与光源连线…</p>
+<p><strong>背景色</strong>：</p>
+<p>光线没有与物体相交而是射向了远处，就用背景色。透明球上会有背景色也是因为折射光线射向了远处。</p>
+<p><strong>阴影</strong>：</p>
+<p>地面上可以看到 2 层阴影。对于 <code>DIFFUSE_AND_GLOSSY</code> 材质，<code>castRay()</code> 会将光线射到的位置与光源连线，中间没有其他物体就加上光源的光照，有物体遮挡就不加。</p>
+<p>这个阴影挺粗糙，首先 2 个光源全被挡住的地方全黑了；然后由于做阴影时 “有遮挡就不算光源” 的处理，透明球、普通球的阴影效果是一样的，但按理说透明球肯定有光透过，阴影应该亮一些。</p>
+<h2 id="代码补全">代码补全</h2>
+<h3 id="光线生成-Render-补全">光线生成 (Render 补全)</h3>
+<p>光追渲染器模型大致如下：<br>
+<img src="/img/CG/Lab5_render.jpg"></p>
+<p>这里相机在原点，屏幕在 <code>z = -1</code>，相机垂直视角 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>o</mi><mi>v</mi><mo>=</mo><msup><mn>90</mn><mo lspace="0em" rspace="0em">∘</mo></msup></mrow><annotation encoding="application/x-tex">fov = 90^{\circ}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6741em;"></span><span class="mord">9</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6741em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∘</span></span></span></span></span></span></span></span></span></span></span></span>，要把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1280</mn><mo>×</mo><mn>960</mn></mrow><annotation encoding="application/x-tex">1280\times 960</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">1280</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">960</span></span></span></span> 的图片缩放到光追模型中屏幕的尺寸，再生成对应像素位置的光线。</p>
+<p>代码就 4 行：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Renderer.cpp</span></span><br><span class="line"><span class="type">float</span> px = (i + <span class="number">0.5f</span>) / scene.width; <span class="comment">// 取像素中心点的位置</span></span><br><span class="line"><span class="type">float</span> py = (j + <span class="number">0.5f</span>) / scene.height;</span><br><span class="line">x = (px * <span class="number">2.0f</span> - <span class="number">1.0f</span>) * scale * imageAspectRatio;</span><br><span class="line">y = (<span class="number">1.0f</span> - py * <span class="number">2.0f</span>) * scale;</span><br></pre></td></tr></table></figure>
+<p>当前效果：<br>
+<img src="/img/CG/Lab5_first.jpg"></p>
+<h3 id="光线与三角形相交">光线与三角形相交</h3>
+<p>按 ppt 上的 Moller-Trumbore 公式实现 <code>rayTriangleIntersect()</code>，判断光线与三角形是否相交，并返回交点信息。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Triangle.hpp</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">rayTriangleIntersect</span><span class="params">(<span class="type">const</span> Vector3f&amp; v0, <span class="type">const</span> Vector3f&amp; v1, <span class="type">const</span> Vector3f&amp; v2, <span class="type">const</span> Vector3f&amp; orig,</span></span></span><br><span class="line"><span class="params"><span class="function">                          <span class="type">const</span> Vector3f&amp; dir, <span class="type">float</span>&amp; tnear, <span class="type">float</span>&amp; u, <span class="type">float</span>&amp; v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Vector3f E1 = v1 - v0;</span><br><span class="line">    Vector3f E2 = v2 - v0;</span><br><span class="line">    Vector3f S  = orig - v0;</span><br><span class="line">    Vector3f S1 = <span class="built_in">crossProduct</span>(dir, E2);</span><br><span class="line">    Vector3f S2 = <span class="built_in">crossProduct</span>(S, E1);</span><br><span class="line">    <span class="function">Vector3f <span class="title">res</span><span class="params">(dotProduct(S2, E2), dotProduct(S1, S), dotProduct(S2, dir))</span></span>;</span><br><span class="line">    res = res / <span class="built_in">dotProduct</span>(S1, E1);</span><br><span class="line"></span><br><span class="line">    tnear = res.x;</span><br><span class="line">    u = res.y;</span><br><span class="line">    v = res.z;</span><br><span class="line">    <span class="keyword">if</span> (tnear &gt;= <span class="number">0</span> &amp;&amp; u &gt;= <span class="number">0</span> &amp;&amp; v &gt;= <span class="number">0</span> &amp;&amp; <span class="number">1.0f</span> - u - v &gt;= <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最终效果：<br>
+<img src="/img/CG/Lab5_second.jpg"></p>
+<h2 id="总结">总结</h2>
+<p>这次做了光追中的<strong>光线生成</strong>和<strong>光线与三角形求交</strong>（Moller-Trumbore 算法），了解了下<strong>光线追踪渲染器</strong>的代码框架。</p>
+<p>效果还挺好康的，诶嘿~</p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CSdiy/">CSdiy</a><a class="post-meta__tags" href="/tags/GAMES101/">GAMES101</a></div><div class="post-share"><div class="social-share" data-image="/img/cover/games101.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/07/31/games101-4/" title="GAMES101 作业 (4)"><img class="cover" src="/img/cover/games101.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">GAMES101 作业 (4)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 4，实现了绘制 Bézier 曲线的 de Casteljau 算法，可以点点然后画线线</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/03/18/games101-2/" title="GAMES101 作业 (2)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-03-18</div><div class="info-item-2">GAMES101 作业 (2)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 2，实现了三角形光栅化、深度缓冲和 SSAA ，可以看三角形叠叠 (光滑边缘版)</div></div></div></a><a class="pagination-related" href="/2026/07/31/games101-4/" title="GAMES101 作业 (4)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-31</div><div class="info-item-2">GAMES101 作业 (4)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 4，实现了绘制 Bézier 曲线的 de Casteljau 算法，可以点点然后画线线</div></div></div></a><a class="pagination-related" href="/2026/02/20/games101-0/" title="GAMES101 作业 (0)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-20</div><div class="info-item-2">GAMES101 作业 (0)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 0，以及 Eigen 库的一些基本操作</div></div></div></a><a class="pagination-related" href="/2026/02/21/games101-1/" title="GAMES101 作业 (1)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-21</div><div class="info-item-2">GAMES101 作业 (1)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 1，实现了模型变换和投影变换矩阵，可以看三角形转圈圈</div></div></div></a><a class="pagination-related" href="/2026/06/09/games101-3/" title="GAMES101 作业 (3)"><img class="cover" src="/img/cover/games101.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-09</div><div class="info-item-2">GAMES101 作业 (3)</div></div><div class="info-2"><div class="info-item-1">GAMES101 作业 3，实现了软光栅化渲染管线的片段着色部分，可以看到炫彩牛牛、巧克力牛牛、塑料奶牛、鳞片炫彩牛牛和鳞片金属牛牛</div></div></div></a><a class="pagination-related" href="/2025/08/11/PKUcompiler-Lab6/" title="PKU 编译原理实践 Lab6"><img class="cover" src="/img/cover/Compilers.png" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-08-11</div><div class="info-item-2">PKU 编译原理实践 Lab6</div></div><div class="info-2"><div class="info-item-1">PKU 编译原理实践 第六个测试，添加了 if-else 语句处理，实现了逻辑表达式短路求值</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/Nahida.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">LesserLordKusanali1027</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/LesserLordKusanali1027"><i class="fab fa-github"></i><span>我的 GitHub</span></a></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">第 5 次作业</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">作业框架分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%A9%E4%BD%93%E7%B1%BB-Object%E3%80%81Sphere%E3%80%81MeshTriangle"><span class="toc-number">1.1.1.</span> <span class="toc-text">物体类 (Object、Sphere、MeshTriangle)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF%E7%B1%BB-Scene"><span class="toc-number">1.1.2.</span> <span class="toc-text">场景类 (Scene)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E8%BF%BD%E8%B8%AA%E6%B8%B2%E6%9F%93%E5%99%A8-Renderer"><span class="toc-number">1.1.3.</span> <span class="toc-text">光线追踪渲染器 (Renderer)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%A1%A5%E5%85%A8"><span class="toc-number">1.2.</span> <span class="toc-text">代码补全</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E7%94%9F%E6%88%90-Render-%E8%A1%A5%E5%85%A8"><span class="toc-number">1.2.1.</span> <span class="toc-text">光线生成 (Render 补全)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E4%B8%8E%E4%B8%89%E8%A7%92%E5%BD%A2%E7%9B%B8%E4%BA%A4"><span class="toc-number">1.2.2.</span> <span class="toc-text">光线与三角形相交</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.3.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/08/09/games101-5/" title="GAMES101 作业 (5)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (5)"/></a><div class="content"><a class="title" href="/2026/08/09/games101-5/" title="GAMES101 作业 (5)">GAMES101 作业 (5)</a><time datetime="2026-08-09T14:21:27.000Z" title="发表于 2026-08-09 22:21:27">2026-08-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/31/games101-4/" title="GAMES101 作业 (4)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (4)"/></a><div class="content"><a class="title" href="/2026/07/31/games101-4/" title="GAMES101 作业 (4)">GAMES101 作业 (4)</a><time datetime="2026-07-31T05:38:11.000Z" title="发表于 2026-07-31 13:38:11">2026-07-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/06/09/games101-3/" title="GAMES101 作业 (3)"><img src="/img/cover/games101.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GAMES101 作业 (3)"/></a><div class="content"><a class="title" href="/2026/06/09/games101-3/" title="GAMES101 作业 (3)">GAMES101 作业 (3)</a><time datetime="2026-06-09T09:38:23.000Z" title="发表于 2026-06-09 17:38:23">2026-06-09</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/cover/sweet.jpg);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By LesserLordKusanali1027</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"><script>(async () => {
+  const showKatex = () => {
+    document.querySelectorAll('#article-container .katex').forEach(el => el.classList.add('katex-show'))
+  }
+
+  if (!window.katex_js_css) {
+    window.katex_js_css = true
+    await btf.getCSS('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/katex.min.css')
+    if (true) {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/katex@0.16.28/dist/contrib/copy-tex.min.js')
+    }
+  }
+
+  showKatex()
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
